@@ -86,8 +86,17 @@ public class PlayerController : MonoBehaviour {
             if(!ShieldOut)
             {
                 //   var cloneBomb=Instantiate(BombPrefab,bombPos,Quaternion.identity);
-                cloneShield = Instantiate(shield, transform.position, transform.rotation);
+                var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                mousePos.z = transform.position.z;
+                var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
+                cloneShield = Instantiate(shield, shieldPos, transform.rotation);
+               
                 ShieldOut = true;
+
+                //stop moving when shield is out
+                rb2d.velocity = Vector3.zero;
+                //rb2d.angularVelocity = Vector3.zero;
 
             }
         }
@@ -145,7 +154,11 @@ public class PlayerController : MonoBehaviour {
         //rb2d.
 
         //this is what actually moves the thing
-        rb2d.AddForce(movement * speed);
+        if(!ShieldUp)
+        {
+            rb2d.AddForce(movement * speed);
+        }
+        
     }
     
     
@@ -184,7 +197,11 @@ public class PlayerController : MonoBehaviour {
             health = health - damage;
             SetHitText();
             //knock away
-            rb2d.AddForce(other.gameObject.transform.up * (speed * 50));
+            if(!ShieldOut)
+            {
+                rb2d.AddForce(other.gameObject.transform.up * (speed * 50));
+            }
+            
             startBlinking = true;
         }
 
