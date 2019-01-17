@@ -277,7 +277,6 @@ C:\Users\User\Documents\GoldjasFirstGame\Temp\bin\Debug\UnityEngine.Timeline.xml
 C:\Users\User\Documents\GoldjasFirstGame\Temp\bin\Debug\UnityEngine.Networking.xml
 C:\Users\User\Documents\GoldjasFirstGame\Temp\bin\Debug\UnityEngine.GoogleAudioSpatializer.xml
 C:\Users\User\Documents\GoldjasFirstGame\Temp\bin\Debug\UnityEngine.SpatialTracking.xml
-C:\Users\User\Documents\GoldjasFirstGame\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
 C:\Users\User\Documents\GoldjasFirstGame\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
 C:\Users\User\Documents\GoldjasFirstGame\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\User\Documents\GoldjasFirstGame\obj\Debug\Assembly-CSharp.dll

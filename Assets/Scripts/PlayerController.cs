@@ -28,6 +28,16 @@ public class PlayerController : MonoBehaviour {
     public Text HealthText;       
     public float health;
 
+    public Text EnergyText;
+    public float energy;
+
+    public Text PointsText;
+    public float points;
+
+    public Text CurrentEnemyNameText;
+
+    public Text CurrentEnemyHealthText;
+
     private Rigidbody2D rb2d;       
     //private int count;
     Animator anim;
@@ -47,10 +57,14 @@ public class PlayerController : MonoBehaviour {
         ShieldUp = false;
         invincible = false;
         health = 100;
+        energy = 50;
+        points = 0;
         //Get and store a reference to the Rigidbody2D component so that we can access it.
         rb2d = GetComponent<Rigidbody2D>();
         // count = 0;
         SetHitText();
+        SetEnergyText();
+        SetPointText();
 
         anim = GetComponent<Animator>();
     }
@@ -207,14 +221,26 @@ public class PlayerController : MonoBehaviour {
 
     }
 
+    public void SetShieldedToTrue()
+    {
+        Shielded = true;
+    }
+
     void SetHitText()
     {
         HealthText.text = "Health: " + health.ToString();
     }
 
-    public void SetShieldedToTrue()
+
+
+    void SetEnergyText()
     {
-        Shielded = true;
+        EnergyText.text = "Energy: " + energy.ToString();
+    }
+
+    void SetPointText()
+    {
+        PointsText.text = "XP: " + points.ToString();
     }
 
 
@@ -244,6 +270,12 @@ public class PlayerController : MonoBehaviour {
                 this.gameObject.GetComponent<SpriteRenderer>().enabled = true;   //make changes
             }
         }
+    }
+
+    public void SetLastHitEnemyInfo(string currentEnemyName, float currentEnemyHealth)
+    {
+        CurrentEnemyNameText.text = currentEnemyName;
+        CurrentEnemyHealthText.text = currentEnemyHealth.ToString();
     }
 
 }
