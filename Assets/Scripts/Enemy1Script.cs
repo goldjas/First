@@ -21,7 +21,7 @@ public class Enemy1Script : MonoBehaviour {
     public float nextHealth;
 
     private Rigidbody2D rb2d;
-    private bool healthout;
+    //private bool healthout;
 
     float health;
 
@@ -33,6 +33,8 @@ public class Enemy1Script : MonoBehaviour {
         health = 10;
         rb2d = GetComponent<Rigidbody2D>();
         healthTimer = 0.5f;
+        //NOTE:  TO TELEPORT to Y position 5
+        // transform.position = new Vector3(transform.position.x, 5, transform.position.z);
     }
 
     void Hit()
@@ -43,7 +45,7 @@ public class Enemy1Script : MonoBehaviour {
         var childCanvas = gameObject.transform.GetChild(0).gameObject;
         var childText = childCanvas.gameObject.transform.GetChild(0).gameObject;
         childText.SetActive(true);
-        healthout = true;
+        //healthout = true;
         var curvec = gameObject.transform.transform.up;
         curvec.y = curvec.y + 10;
         //childText.transform.LookAt(curvec);

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Class;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,11 @@ public class PlayerController : MonoBehaviour {
     public GameObject shield;
     private GameObject cloneShield;
 
+    public PlayerCharacter thePlayerCharacter;
+
+    public GameObject escapeMenus;
+    public bool isPaus;
+
     public float tilt;
     //public Done_Boundary boundary;
 
@@ -26,13 +32,13 @@ public class PlayerController : MonoBehaviour {
     public float speed;            
 
     public Text HealthText;       
-    public float health;
+    private float health;
 
     public Text EnergyText;
-    public float energy;
+    private float energy;
 
     public Text PointsText;
-    public float points;
+    private float points;
 
     public Text CurrentEnemyNameText;
 
@@ -53,10 +59,13 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        thePlayerCharacter = new PlayerCharacter();
         Shielded = false;
         ShieldUp = false;
         invincible = false;
         health = 100;
+       
+
         energy = 50;
         points = 0;
         //Get and store a reference to the Rigidbody2D component so that we can access it.
@@ -67,80 +76,96 @@ public class PlayerController : MonoBehaviour {
         SetPointText();
 
         anim = GetComponent<Animator>();
+
+        escapeMenus.SetActive(false);
+        thePlayerCharacter.Health = health;
+        thePlayerCharacter.Energy = energy;
+        thePlayerCharacter.XP = points;
     }
 
     void Update()
     {
-
-        if (startBlinking == true)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            invincible = true;
-            SpriteBlinkingEffect();
+            SetPause();
+
+            //SetCountText();
         }
 
-        dashTimer = 3;
-        if (Input.GetButton("Fire1") && Time.time > nextFire  && !ShieldUp)
+        if(!isPaus)
         {
-            nextFire = Time.time + fireRate;
-            anim.SetTrigger("Attack");
-
-            //			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-            //GetComponent<AudioSource>().Play();
-
-        }
-
-        if (Input.GetButtonDown("Fire2") && Time.time > nextFire )
-        {
-            
-            //getbutton down and getbutton up
-            //Shield
-            //nextFire = Time.time + fireRate;
-            // anim.SetTrigger("Attack");
-            ShieldUp = true;
-            if(!ShieldOut)
+            if (startBlinking == true)
             {
-                //   var cloneBomb=Instantiate(BombPrefab,bombPos,Quaternion.identity);
-                var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                invincible = true;
+                SpriteBlinkingEffect();
+            }
 
-                mousePos.z = transform.position.z;
-                var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
-                cloneShield = Instantiate(shield, shieldPos, transform.rotation);
-               
-                ShieldOut = true;
+            dashTimer = 3;
+            if (Input.GetButton("Fire1") && Time.time > nextFire && !ShieldUp)
+            {
+                nextFire = Time.time + fireRate;
+                anim.SetTrigger("Attack");
 
-                //stop moving when shield is out
-                rb2d.velocity = Vector3.zero;
-                //rb2d.angularVelocity = Vector3.zero;
+                //			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                //GetComponent<AudioSource>().Play();
+
+            }
+
+            if (Input.GetButtonDown("Fire2") && Time.time > nextFire)
+            {
+
+                //getbutton down and getbutton up
+                //Shield
+                //nextFire = Time.time + fireRate;
+                // anim.SetTrigger("Attack");
+                ShieldUp = true;
+                if (!ShieldOut)
+                {
+                    //   var cloneBomb=Instantiate(BombPrefab,bombPos,Quaternion.identity);
+                    var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                    mousePos.z = transform.position.z;
+                    var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
+                    cloneShield = Instantiate(shield, shieldPos, transform.rotation);
+
+                    ShieldOut = true;
+
+                    //stop moving when shield is out
+                    rb2d.velocity = Vector3.zero;
+                    //rb2d.angularVelocity = Vector3.zero;
+
+                }
+            }
+
+            if (Input.GetButtonUp("Fire2"))
+            {
+                ShieldUp = false;
+                Destroy(cloneShield);
+                ShieldOut = false;
+                Shielded = false;
+            }
+
+
+            if (Input.GetButton("Fire3") && Time.time > nextDash)
+            {
+                nextDash = Time.time + dashTimer;
+                //Store the current horizontal input in the float moveHorizontal.
+                float moveHorizontal = Input.GetAxis("Horizontal");
+
+                //Store the current vertical input in the float moveVertical.
+                float moveVertical = Input.GetAxis("Vertical");
+                Vector2 movement = new Vector2(moveHorizontal, moveVertical);
+                startBlinking = true;
+                rb2d.AddForce(movement * (speed * 150));
+
+
+                //			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                //GetComponent<AudioSource>().Play();
 
             }
         }
 
-        if (Input.GetButtonUp("Fire2"))
-        {
-            ShieldUp = false;
-            Destroy(cloneShield);
-            ShieldOut = false;
-            Shielded = false;
-        }
-
-
-            if (Input.GetButton("Fire3") && Time.time > nextDash)
-        {
-            nextDash = Time.time + dashTimer;
-            //Store the current horizontal input in the float moveHorizontal.
-            float moveHorizontal = Input.GetAxis("Horizontal");
-
-            //Store the current vertical input in the float moveVertical.
-            float moveVertical = Input.GetAxis("Vertical");
-            Vector2 movement = new Vector2(moveHorizontal, moveVertical);
-            startBlinking = true;
-            rb2d.AddForce(movement * (speed * 150));
-            
-
-            //			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-            //GetComponent<AudioSource>().Play();
-
-        }
+        
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -174,23 +199,21 @@ public class PlayerController : MonoBehaviour {
         }
         
     }
-    
-    
-    //void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    if (other.gameObject.CompareTag("EnemyAttack"))
-    //    {
-    //        //if()
-    //        //{
 
-    //            health = health - 5;
-    //            SetHitText();
-    //            //knock away
-    //            rb2d.AddForce(other.gameObject.transform.up * (speed * 50));
-    //        //}
 
-    //    }
-    //}
+    public void SetPause()
+    {
+        if (!isPaus)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+        isPaus = !isPaus;
+        escapeMenus.SetActive(isPaus);
+    }
 
     public void TakeDamage(int damage, Collider2D other, bool shielded)
     {
