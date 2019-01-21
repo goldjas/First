@@ -11,6 +11,7 @@ public class Enemy1Script : MonoBehaviour {
     public Text HealthText;
     private float nextFire;
     public GameObject shot;
+    public GameObject healthCrystal;
     public Transform shotSpawn;
     public GameObject WallToDestroy;
     public GameObject playerObject;
@@ -62,12 +63,20 @@ public class Enemy1Script : MonoBehaviour {
         //HealthText.text = "" + health.ToString();
         if (health<=0)
         {
-            Destroy(gameObject);
-            Destroy(WallToDestroy);
+            Death();
             
             //var destobj = DestroyWall1;
             //Destroy(destobj);
         }
+    }
+
+    void Death()
+    {
+        Instantiate(healthCrystal, transform.position, transform.rotation);
+        Destroy(gameObject);
+        Destroy(WallToDestroy);
+        
+
     }
 
     void OnTriggerEnter2D(Collider2D other)

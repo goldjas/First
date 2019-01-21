@@ -14,8 +14,17 @@ public class PlayerController : MonoBehaviour {
     public bool startBlinking = false;
     public GameObject shield;
     private GameObject cloneShield;
+    public AudioClip PickupClip;
+    
+    private float Heals;
+    private float MaxHeals;
+    public Image CrystalPicture;
+    public Text HealsText;
+
+    public bool HealVisible;
 
     public PlayerCharacter thePlayerCharacter;
+    private float HealingValue;
 
     public GameObject escapeMenus;
     public bool isPaus;
@@ -33,6 +42,7 @@ public class PlayerController : MonoBehaviour {
 
     public Text HealthText;       
     private float health;
+    private float MaxHealth;
 
     public Text EnergyText;
     private float energy;
@@ -43,6 +53,8 @@ public class PlayerController : MonoBehaviour {
     public Text CurrentEnemyNameText;
 
     public Text CurrentEnemyHealthText;
+
+    private bool CrystalAvailable;
 
     private Rigidbody2D rb2d;       
     //private int count;
@@ -59,12 +71,19 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        //CrystalPicture.sprite
         thePlayerCharacter = new PlayerCharacter();
         Shielded = false;
         ShieldUp = false;
         invincible = false;
         health = 100;
-       
+        MaxHealth = 100;
+        HealingValue = 50;
+        Heals = 2;
+        MaxHeals = 2;
+        CrystalAvailable = false;
+
+        HealsText.text = "";
 
         energy = 50;
         points = 0;
@@ -85,6 +104,12 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
+        if(CrystalAvailable)
+        {
+            CrystalPicture.color = new Color(255, 255, 255, 255);
+            HealsText.text = "x" + Heals;
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SetPause();
@@ -158,6 +183,8 @@ public class PlayerController : MonoBehaviour {
                 startBlinking = true;
                 rb2d.AddForce(movement * (speed * 150));
 
+                
+
 
                 //			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
                 //GetComponent<AudioSource>().Play();
@@ -165,7 +192,26 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        
+        if (Input.GetButton("Heal"))
+        {
+            if(Heals > 0)
+            {
+
+                if(health < MaxHealth)
+                {
+                    health = health + HealingValue;
+                    if(health > MaxHealth)
+                    {
+                        health = MaxHealth;
+                    }
+                    SetHitText();
+                    AudioSource.PlayClipAtPoint(PickupClip, gameObject.transform.position);
+                    Heals = Heals - 1;
+                    
+                }
+                
+            }
+        }
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -198,6 +244,25 @@ public class PlayerController : MonoBehaviour {
             rb2d.AddForce(movement * speed);
         }
         
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Pickup"))
+        {
+            //Debug.Log("triggered " + other.gameObject.name.ToString());
+            if (other.gameObject.name == "HealthCrystal(Clone)")
+            {
+                CrystalPicture.color = new Color(255, 255, 255, 255);
+                HealsText.text = "x" + Heals;
+                CrystalAvailable = true;
+            }
+            AudioSource.PlayClipAtPoint(PickupClip, gameObject.transform.position);
+            Destroy(other.gameObject);
+
+        }
+
+
     }
 
 
@@ -251,7 +316,7 @@ public class PlayerController : MonoBehaviour {
 
     void SetHitText()
     {
-        HealthText.text = "Health: " + health.ToString();
+        HealthText.text = "Health: " + health.ToString() + "/" + MaxHeals.ToString();
     }
 
 
@@ -284,13 +349,13 @@ public class PlayerController : MonoBehaviour {
         if (spriteBlinkingTimer >= spriteBlinkingMiniDuration)
         {
             spriteBlinkingTimer = 0.0f;
-            if (this.gameObject.GetComponent<SpriteRenderer>().enabled == true)
+            if (gameObject.GetComponent<SpriteRenderer>().enabled == true)
             {
-                this.gameObject.GetComponent<SpriteRenderer>().enabled = false;  //make changes
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;  //make changes
             }
             else
             {
-                this.gameObject.GetComponent<SpriteRenderer>().enabled = true;   //make changes
+                gameObject.GetComponent<SpriteRenderer>().enabled = true;   //make changes
             }
         }
     }
