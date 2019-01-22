@@ -57,6 +57,7 @@
      <Compile Include="Assets\Scripts\ButtonScript.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\Class\PlayerCharacter.cs" />
+     <Compile Include="Assets\Scripts\Class\PlayerWeapon.cs" />
      <Compile Include="Assets\Scripts\DeathScript.cs" />
      <Compile Include="Assets\Scripts\Enemy1Script.cs" />
      <Compile Include="Assets\Scripts\LoadSceneOnClick.cs" />
@@ -67,6 +68,7 @@
      <Compile Include="Assets\Scripts\shieldscript.cs" />
      <Compile Include="Assets\Scripts\ShotScript.cs" />
      <Compile Include="Assets\Scripts\SwordScript.cs" />
+     <Compile Include="Assets\Scripts\SwordShotScript.cs" />
      <Compile Include="Assets\TooCubeForest\demoScenes\Movement.cs" />
      <None Include="Assets\Sprite\README.txt" />
      <None Include="Assets\Sprite\License.txt" />

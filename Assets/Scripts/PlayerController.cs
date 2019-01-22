@@ -13,7 +13,9 @@ public class PlayerController : MonoBehaviour {
     public float spriteBlinkingTotalDuration = 0.2f;
     public bool startBlinking = false;
     public GameObject shield;
+    public GameObject SwordLaser;
     private GameObject cloneShield;
+    private GameObject cloneSwordLaser;
     public AudioClip PickupClip;
     
     private float Heals;
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour {
 
     public Text EnergyText;
     private float energy;
+    private float MaxEnergy;
 
     public Text PointsText;
     private float points;
@@ -86,6 +89,7 @@ public class PlayerController : MonoBehaviour {
         HealsText.text = "";
 
         energy = 50;
+        MaxEnergy = 50;
         points = 0;
         //Get and store a reference to the Rigidbody2D component so that we can access it.
         rb2d = GetComponent<Rigidbody2D>();
@@ -107,7 +111,7 @@ public class PlayerController : MonoBehaviour {
         if(CrystalAvailable)
         {
             CrystalPicture.color = new Color(255, 255, 255, 255);
-            HealsText.text = "x" + Heals;
+            HealsText.text = "x" + Heals + "/" + MaxHeals;
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -192,7 +196,7 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if (Input.GetButton("Heal"))
+        if(Input.GetButton("Heal"))
         {
             if(Heals > 0)
             {
@@ -211,6 +215,19 @@ public class PlayerController : MonoBehaviour {
                 }
                 
             }
+        }
+
+        if (Input.GetButton("Spell1") && Time.time > nextFire && !ShieldUp && energy > 0)
+        {
+           
+                nextFire = Time.time + fireRate;
+            //mousePos.z = transform.position.z;
+            //var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
+            cloneSwordLaser = Instantiate(SwordLaser, gameObject.transform.position, transform.rotation);
+            energy = energy - 10;
+            SetEnergyText();
+
+
         }
     }
 
@@ -254,7 +271,7 @@ public class PlayerController : MonoBehaviour {
             if (other.gameObject.name == "HealthCrystal(Clone)")
             {
                 CrystalPicture.color = new Color(255, 255, 255, 255);
-                HealsText.text = "x" + Heals;
+                HealsText.text = "x" + Heals + "/" + MaxHeals;
                 CrystalAvailable = true;
             }
             AudioSource.PlayClipAtPoint(PickupClip, gameObject.transform.position);
@@ -316,14 +333,15 @@ public class PlayerController : MonoBehaviour {
 
     void SetHitText()
     {
-        HealthText.text = "Health: " + health.ToString() + "/" + MaxHeals.ToString();
+        HealthText.text = "Health: " + health.ToString() + "/" + MaxHealth.ToString();
     }
 
 
 
     void SetEnergyText()
     {
-        EnergyText.text = "Energy: " + energy.ToString();
+        EnergyText.text = "Energy: " + energy.ToString() + "/" + MaxEnergy.ToString();
+
     }
 
     void SetPointText()

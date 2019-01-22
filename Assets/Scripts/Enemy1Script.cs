@@ -38,9 +38,8 @@ public class Enemy1Script : MonoBehaviour {
         // transform.position = new Vector3(transform.position.x, 5, transform.position.z);
     }
 
-    void Hit()
+    public void Hit(int damage)
     {
-        var damage = 1;
         health = health - damage;
         //gameObject.in
         var childCanvas = gameObject.transform.GetChild(0).gameObject;
@@ -85,7 +84,7 @@ public class Enemy1Script : MonoBehaviour {
         {
             //Debug.Log("triggered " + other.gameObject.name);
             //    other.gameObject.SetActive(false);
-            Hit();
+            Hit(1);
             //SetHitText();
         }
 
