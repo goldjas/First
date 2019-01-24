@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
     public float spriteBlinkingTimer = 0.0f;
     public float spriteBlinkingMiniDuration = 0.1f;
     public float spriteBlinkingTotalTimer = 0.0f;
-    public float spriteBlinkingTotalDuration = 0.2f;
+    public float spriteBlinkingTotalDuration = 0.5f;
     public bool startBlinking = false;
     public GameObject shield;
     public GameObject SwordLaser;
@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour {
                 SpriteBlinkingEffect();
             }
 
-            dashTimer = 3;
+            dashTimer = 2;
             if (Input.GetButton("Fire1") && Time.time > nextFire && !ShieldUp)
             {
                 nextFire = Time.time + fireRate;
@@ -281,11 +281,11 @@ public class PlayerController : MonoBehaviour {
 
         }
 
-        if (other.gameObject.CompareTag("EnemyAttack"))
-        {
-            TakeDamage(10, other, true);
-            //other.gameObject.GetComponent<PlayerController>().TakeDamage(10, GetComponent<Collider2D>(), false);
-        }
+        //if (other.gameObject.CompareTag("EnemyAttack"))
+        //{
+        //    TakeDamage(10, other, true);
+        //    //other.gameObject.GetComponent<PlayerController>().TakeDamage(10, GetComponent<Collider2D>(), false);
+        //}
 
 
     }
@@ -308,7 +308,7 @@ public class PlayerController : MonoBehaviour {
     public void TakeDamage(int damage, Collider2D other, bool shielded)
     {
         //check if shield is out and then x and y coordinates on shield instead?
-        
+       
         //Debug.Log("triggered start" );
         if (Shielded)
         {

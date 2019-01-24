@@ -69,6 +69,7 @@ public class ShotScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        damage = 8;
         //if (other.gameObject.CompareTag("Attack"))
         //{
         //    Debug.Log("triggered " + other.gameObject.name);

@@ -226,18 +226,24 @@ public class Enemy1Script : MonoBehaviour {
         {
             Vector2 moveDir = transform.position - player.transform.position;
             rb2d.AddForce(gameObject.transform.up * speed);
-            var fireRate = 2;
-            if (Time.time > nextFire && distance < 1)
+            var fireRate = 8;
+            if (Time.time > nextFire && distance < 0.5 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"))
             {
+                Debug.Log("is animating" + anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"));
                 nextFire = Time.time + fireRate;
                 anim.SetTrigger("Attack");
                 //shot.GetComponent<ShotScript>().SetPlayer(player);
-                Debug.Log("triggered " + anim.GetCurrentAnimatorStateInfo(0).ToString());
+               
 
+            }
+            else if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"))
+            {
+                Debug.Log("is animating" + anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"));
+                rb2d.velocity = Vector3.zero;
             }
             else
             {
-                Debug.Log("triggered " + anim.GetCurrentAnimatorStateInfo(0).ToString());
+              
                 rb2d.AddForce(gameObject.transform.up * speed);
             }
         }

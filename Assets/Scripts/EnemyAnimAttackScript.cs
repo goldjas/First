@@ -65,6 +65,7 @@ public class EnemyAnimAttackScript : MonoBehaviour
         //    Hit();
         //    //SetHitText();
         //}
+        damage = 10;
         if (other.gameObject.CompareTag("Shield"))
         {
             isCollidedWithShield = true;
@@ -84,6 +85,7 @@ public class EnemyAnimAttackScript : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Player Hit");
             other.gameObject.GetComponent<PlayerController>().TakeDamage(damage, GetComponent<Collider2D>(), false);
         }
 
