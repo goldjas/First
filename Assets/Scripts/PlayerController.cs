@@ -260,7 +260,9 @@ public class PlayerController : MonoBehaviour {
         {
             rb2d.AddForce(movement * speed);
         }
-        
+
+
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -277,6 +279,12 @@ public class PlayerController : MonoBehaviour {
             AudioSource.PlayClipAtPoint(PickupClip, gameObject.transform.position);
             Destroy(other.gameObject);
 
+        }
+
+        if (other.gameObject.CompareTag("EnemyAttack"))
+        {
+            TakeDamage(10, other, true);
+            //other.gameObject.GetComponent<PlayerController>().TakeDamage(10, GetComponent<Collider2D>(), false);
         }
 
 
@@ -313,6 +321,7 @@ public class PlayerController : MonoBehaviour {
 
         if(!invincible)
         {
+            Debug.Log("Damage Taken" + damage.ToString());
             health = health - damage;
             SetHitText();
             //knock away

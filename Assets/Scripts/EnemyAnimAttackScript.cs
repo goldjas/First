@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShotScript : MonoBehaviour
+public class EnemyAnimAttackScript : MonoBehaviour
 {
-
     int damage;   //pass this in from the monster so we can use straight shot on anyone maybe?
     public float speed;
     public Transform player;
@@ -15,10 +14,8 @@ public class ShotScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        damage = 8;
+        damage = 10;
         speed = 5;
-        //Shot that points straight at player at goes towards him
-
     }
 
     public void SetPlayer(Transform passedPlayer)
@@ -32,9 +29,18 @@ public class ShotScript : MonoBehaviour
         Vector2 movedir = (enemyPos - playpos);
 
         GameObject go = GameObject.FindGameObjectWithTag("Player");
-        var target = go.transform;
+        //var target = go.transform;
         // rotate the projectile to aim the target:
-        transform.LookAt(target);
+        //transform.LookAt(target);
+    }
+
+    public void OnCollisionEnter2d(Collision collision)
+    {
+        isCollidedWithShield = false;
+        if (collision.gameObject.CompareTag("Shield"))
+        {
+            isCollidedWithShield = true;
+        }
     }
 
     // Update is called once per frame
@@ -48,23 +54,6 @@ public class ShotScript : MonoBehaviour
         float amtToMove = 5 * Time.deltaTime;
         // translate projectile in its forward direction:
         transform.Translate(Vector2.up * amtToMove);
-
-
-
-    }
-
-    public void OnCollisionEnter2d(Collision collision)
-    {
-     
-        isCollidedWithShield = false;
-        if (collision.gameObject.CompareTag("Shield"))
-            {
-                isCollidedWithShield = true;
-            }
-
-       
-
-
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -79,7 +68,7 @@ public class ShotScript : MonoBehaviour
         if (other.gameObject.CompareTag("Shield"))
         {
             isCollidedWithShield = true;
-           
+
         }
 
         if (other.gameObject.CompareTag("Player") && isCollidedWithShield)
@@ -88,26 +77,24 @@ public class ShotScript : MonoBehaviour
             // Debug.Log("triggered " + other.gameObject.name);
             //    other.gameObject.SetActive(false);
             Debug.Log("shielded");
-            other.gameObject.GetComponent<PlayerController>().TakeDamage(damage, GetComponent<Collider2D>(),true);
+            other.gameObject.GetComponent<PlayerController>().TakeDamage(damage, GetComponent<Collider2D>(), true);
             isCollidedWithShield = false;
-            Destroy(gameObject);
-           // Debug.Log("shielded ");
+            // Debug.Log("shielded ");
             //SetHitText();
         }
-        else if(other.gameObject.CompareTag("Player"))
+        else if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerController>().TakeDamage(damage, GetComponent<Collider2D>(),false);
-            Destroy(gameObject);
+            other.gameObject.GetComponent<PlayerController>().TakeDamage(damage, GetComponent<Collider2D>(), false);
         }
 
-        if (other.gameObject.CompareTag("Wall"))
-        {
-            //myObject.GetComponent<MyScript>().MyFunction()
-            // Debug.Log("triggered " + other.gameObject.name);
-            //    other.gameObject.SetActive(false);
-            Destroy(gameObject);
-            //SetHitText();
-        }
+        //if (other.gameObject.CompareTag("Wall"))
+        //{
+        //    //myObject.GetComponent<MyScript>().MyFunction()
+        //    // Debug.Log("triggered " + other.gameObject.name);
+        //    //    other.gameObject.SetActive(false);
+        //    Destroy(gameObject);
+        //    //SetHitText();
+        //}
 
 
         //        Vector2 moveDir = transform.position - player.transform.position;

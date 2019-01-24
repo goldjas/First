@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Enemy1Script : MonoBehaviour {
-
+    //Is there a better way to differentiate different enemies then just a goofy string here?  HMMMMM
+    public string EnemyName;
     public float speed;
     //transform is the position
     public Transform player;
@@ -15,7 +16,8 @@ public class Enemy1Script : MonoBehaviour {
     public Transform shotSpawn;
     public GameObject WallToDestroy;
     public GameObject playerObject;
-    private string enemyName;
+    public GameObject MainCanvas;
+    public GameObject EnemyDamageText;
     public Text DamageTakenText;
 
     public float healthTimer;
@@ -24,16 +26,19 @@ public class Enemy1Script : MonoBehaviour {
     private Rigidbody2D rb2d;
     //private bool healthout;
 
+    Animator anim;
+
+
     float health;
 
 	// Use this for initialization
 	void Start ()
     {
+        anim = GetComponent<Animator>();
         //playerObject = GameObject.FindGameObjectWithTag("Player");
-        enemyName = "Lesser Light Elemental";
         health = 10;
         rb2d = GetComponent<Rigidbody2D>();
-        healthTimer = 0.5f;
+        healthTimer = 1f;
         //NOTE:  TO TELEPORT to Y position 5
         // transform.position = new Vector3(transform.position.x, 5, transform.position.z);
     }
@@ -42,9 +47,13 @@ public class Enemy1Script : MonoBehaviour {
     {
         health = health - damage;
         //gameObject.in
-        var childCanvas = gameObject.transform.GetChild(0).gameObject;
-        var childText = childCanvas.gameObject.transform.GetChild(0).gameObject;
-        childText.SetActive(true);
+        //var childCanvas = gameObject.transform.GetChild(0).gameObject;
+        //var childText = EnemyDamageText;
+        //childText.SetActive(true);
+        EnemyDamageText.transform.position = gameObject.transform.position;
+
+        //cloneShield = Instantiate(shield, shieldPos, transform.rotation);
+
         //healthout = true;
         var curvec = gameObject.transform.transform.up;
         curvec.y = curvec.y + 10;
@@ -54,10 +63,10 @@ public class Enemy1Script : MonoBehaviour {
         //var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
         //cloneShield = Instantiate(shield, shieldPos, transform.rotation);
         //origTrans = childText.transform;
-       // childText.transform.Translate(childText.transform.up * 2,,);
-        childText.GetComponent<Text>().text = "- " + damage.ToString();
-        //  shot.GetComponent<ShotScript>().SetPlayer(player);
-        playerObject.GetComponent<PlayerController>().SetLastHitEnemyInfo(enemyName, health);
+        // childText.transform.Translate(childText.transform.up * 2,,);
+        EnemyDamageText.GetComponent<Text>().text = "- " + damage.ToString();
+       
+        playerObject.GetComponent<PlayerController>().SetLastHitEnemyInfo(EnemyName, health);
         nextHealth = Time.time + healthTimer;
         //HealthText.text = "" + health.ToString();
         if (health<=0)
@@ -71,9 +80,20 @@ public class Enemy1Script : MonoBehaviour {
 
     void Death()
     {
-        Instantiate(healthCrystal, transform.position, transform.rotation);
-        Destroy(gameObject);
-        Destroy(WallToDestroy);
+        //NOTE:  Replace this with not awful code, make an enemy class, etc. etc.
+        if (EnemyName == "Lesser Light Elemental")
+        {
+            //Debug.Log("triggered " + EnemyName);
+            Instantiate(healthCrystal, transform.position, transform.rotation);
+            Destroy(gameObject);
+            Destroy(WallToDestroy);
+        }
+        else if (EnemyName == "Lesser Dark Elemental")
+        {
+           
+        }
+
+
         
 
     }
@@ -110,34 +130,70 @@ public class Enemy1Script : MonoBehaviour {
 
 
 
-        void FixedUpdate()
+    void FixedUpdate()
     {
-        var childCanvas = gameObject.transform.GetChild(0).gameObject;
-        var childText = childCanvas.gameObject.transform.GetChild(0).gameObject;
-        if(childText.activeInHierarchy)
-        {
-            //childText.transform.Translate(childText.transform.up  * Time.deltaTime);
-            if (Time.time > nextHealth)
-            {
+        //var childCanvas = gameObject.transform.GetChild(0).gameObject;
+        //if(childCanvas !=null)
+        //{
+            //if(EnemyName == "Lesser Light Elemental")
+            //{
+                //var childText = childCanvas.gameObject.transform.GetChild(0).gameObject;
+                //if(childText.activeInHierarchy)
+                //{
+                    //childText.transform.Translate(childText.transform.up  * Time.deltaTime);
+                    if (Time.time > nextHealth)
+                    {
 
-                //childText.transform.position = gameObject.transform.position;
-                childText.SetActive(false);
-            }
+                        //childText.transform.position = gameObject.transform.position;
 
-        }
-         
+                        EnemyDamageText.GetComponent<Text>().text = "" ;
+                    }
 
+
+                //}
+            //}
+        //}
 
         float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
-        speed = 5;
+        
         transform.eulerAngles = new Vector3(0, 0, z);
 
-        //make enemy get close to you, or run away if you get to close to it.
+        speed = 5;
 
+
+        DoAI();
+
+        //myTransform.rigidbody.velocity = Vector3(lookDir.normalized moveSpeed Time.deltaTime);
+
+
+        //shot.transform = player;
+    }
+
+    private void Attack()
+    {
         
-        
+    }
+
+    private void DoAI()
+    {
+        //NOTE:  Replace this with not awful code, make an enemy class, etc. etc.
+        if(EnemyName == "Lesser Light Elemental")
+        {
+            //Debug.Log("triggered " + EnemyName);
+            LesserLightEleAI();
+        }
+        else if (EnemyName == "Lesser Dark Elemental")
+        {
+           
+            LesserDArkEleAI();
+        }
+    }
+
+    private void LesserLightEleAI()
+    {
+        //make enemy get close to you, or run away if you get to close to it.
         float distance = Vector3.Distance(gameObject.transform.position, player.position);
-        if(distance < 5)
+        if (distance < 5)
         {
             Vector2 moveDir = transform.position - player.transform.position;
 
@@ -151,7 +207,7 @@ public class Enemy1Script : MonoBehaviour {
                 rb2d.AddForce(gameObject.transform.up * speed);
             }
 
-            var fireRate = 2;
+            var fireRate = 1.5f;
             if (Time.time > nextFire)
             {
                 nextFire = Time.time + fireRate;
@@ -161,11 +217,29 @@ public class Enemy1Script : MonoBehaviour {
 
             }
         }
+    }
 
+    private void LesserDArkEleAI()
+    {
+        float distance = Vector3.Distance(gameObject.transform.position, player.position);
+        if (distance < 5)
+        {
+            Vector2 moveDir = transform.position - player.transform.position;
+            rb2d.AddForce(gameObject.transform.up * speed);
+            var fireRate = 2;
+            if (Time.time > nextFire && distance < 1)
+            {
+                nextFire = Time.time + fireRate;
+                anim.SetTrigger("Attack");
+                //shot.GetComponent<ShotScript>().SetPlayer(player);
+                Debug.Log("triggered " + anim.GetCurrentAnimatorStateInfo(0).ToString());
 
-        //myTransform.rigidbody.velocity = Vector3(lookDir.normalized moveSpeed Time.deltaTime);
-
-
-        //shot.transform = player;
+            }
+            else
+            {
+                Debug.Log("triggered " + anim.GetCurrentAnimatorStateInfo(0).ToString());
+                rb2d.AddForce(gameObject.transform.up * speed);
+            }
+        }
     }
 }
