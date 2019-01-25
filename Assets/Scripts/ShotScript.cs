@@ -11,20 +11,23 @@ public class ShotScript : MonoBehaviour
     Vector2 playpos;
     Rigidbody2D rb2d;
     bool isCollidedWithShield;
+    public float shotwait;
+    public float shotfires;
 
     // Start is called before the first frame update
     void Start()
     {
+        shotwait = 3;
         damage = 8;
         speed = 5;
         //Shot that points straight at player at goes towards him
-
     }
 
     public void SetPlayer(Transform passedPlayer)
     {
+        
         player = passedPlayer;
-
+        shotwait = 3;
         speed = 5;
         playpos = player.transform.position;
 
@@ -35,6 +38,9 @@ public class ShotScript : MonoBehaviour
         var target = go.transform;
         // rotate the projectile to aim the target:
         transform.LookAt(target);
+        shotfires = shotwait + Time.time;
+       // Debug.Log("shots: " + shotfires);
+
     }
 
     // Update is called once per frame
@@ -42,12 +48,19 @@ public class ShotScript : MonoBehaviour
     {
         isCollidedWithShield = false;
         rb2d = GetComponent<Rigidbody2D>();
-        speed = 1;
+        //wait before firing so player can dodge.
+       // Debug.Log("time: " + Time.time);
+        if (Time.time > shotfires)
+        {
+            speed = 1;
 
-        // distance moved since last frame:
-        float amtToMove = 5 * Time.deltaTime;
-        // translate projectile in its forward direction:
-        transform.Translate(Vector2.up * amtToMove);
+            // distance moved since last frame:
+            float amtToMove = 10 * Time.deltaTime;
+            // translate projectile in its forward direction:
+            transform.Translate(Vector2.up * amtToMove);
+            shotfires = shotwait + Time.deltaTime;
+        }
+
 
 
 

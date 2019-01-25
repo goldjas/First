@@ -90,12 +90,14 @@ public class Enemy1Script : MonoBehaviour {
         }
         else if (EnemyName == "Lesser Dark Elemental")
         {
-           
+            Destroy(gameObject);
+            var destroywall = GameObject.Find("DestroyWall2");
+            Destroy(destroywall);
+            var destroywall2 = GameObject.Find("DestroyWall3");
+            Destroy(destroywall2);
+            var destroywall3 = GameObject.Find("DestroyWall4");
+            Destroy(destroywall3);
         }
-
-
-        
-
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -195,26 +197,29 @@ public class Enemy1Script : MonoBehaviour {
         float distance = Vector3.Distance(gameObject.transform.position, player.position);
         if (distance < 5)
         {
-            Vector2 moveDir = transform.position - player.transform.position;
-
-            if (distance < 2)
-            {
-                rb2d.AddForce(moveDir * speed);
-
-            }
-            else
-            {
-                rb2d.AddForce(gameObject.transform.up * speed);
-            }
-
             var fireRate = 1.5f;
             if (Time.time > nextFire)
             {
                 nextFire = Time.time + fireRate;
                 Instantiate(shot, transform.position, transform.rotation);
-                shot.SetActive(true);
                 shot.GetComponent<ShotScript>().SetPlayer(player);
+                shot.SetActive(true);
+                
+                rb2d.velocity = Vector3.zero;
+            }
+            else
+            {
+                Vector2 moveDir = transform.position - player.transform.position;
 
+                if (distance < 2)
+                {
+                    rb2d.AddForce(moveDir * speed);
+
+                }
+                else
+                {
+                    rb2d.AddForce(gameObject.transform.up * speed);
+                }
             }
         }
     }
@@ -225,9 +230,9 @@ public class Enemy1Script : MonoBehaviour {
         if (distance < 5)
         {
             Vector2 moveDir = transform.position - player.transform.position;
-            rb2d.AddForce(gameObject.transform.up * speed);
-            var fireRate = 8;
-            if (Time.time > nextFire && distance < 0.5 && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"))
+            //rb2d.AddForce(gameObject.transform.up * speed);
+            var fireRate = 2;
+            if (Time.time > nextFire && distance < 0.5f && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"))
             {
                 Debug.Log("is animating" + anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"));
                 nextFire = Time.time + fireRate;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Class
 {
-    class DropsClass
+    class Drops
     {
     }
 }

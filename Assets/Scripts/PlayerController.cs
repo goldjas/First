@@ -333,6 +333,17 @@ public class PlayerController : MonoBehaviour {
             startBlinking = true;
         }
 
+        if(health <= 0)
+        {
+            PlayerDeath();
+        }
+
+    }
+
+    private void PlayerDeath()
+    {
+        Destroy(gameObject);
+
     }
 
     public void SetShieldedToTrue()
@@ -355,7 +366,7 @@ public class PlayerController : MonoBehaviour {
 
     void SetPointText()
     {
-        PointsText.text = "XP: " + points.ToString();
+        PointsText.text = "EE: " + points.ToString();
     }
 
 

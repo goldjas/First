@@ -281,4 +281,3 @@ C:\Users\User\Documents\GoldjasFirstGame\obj\Debug\Assembly-CSharp.csproj.CoreCo
 C:\Users\User\Documents\GoldjasFirstGame\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\User\Documents\GoldjasFirstGame\obj\Debug\Assembly-CSharp.dll
 C:\Users\User\Documents\GoldjasFirstGame\obj\Debug\Assembly-CSharp.pdb
-C:\Users\User\Documents\GoldjasFirstGame\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache

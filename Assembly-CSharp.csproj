@@ -56,10 +56,14 @@
      <Compile Include="Assets\EndAttack.cs" />
      <Compile Include="Assets\Scripts\ButtonScript.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Class\Drops.cs" />
+     <Compile Include="Assets\Scripts\Class\Enemy.cs" />
+     <Compile Include="Assets\Scripts\Class\EnemyAttack.cs" />
      <Compile Include="Assets\Scripts\Class\PlayerCharacter.cs" />
      <Compile Include="Assets\Scripts\Class\PlayerWeapon.cs" />
      <Compile Include="Assets\Scripts\DeathScript.cs" />
      <Compile Include="Assets\Scripts\Enemy1Script.cs" />
+     <Compile Include="Assets\Scripts\EnemyAnimAttackScript.cs" />
      <Compile Include="Assets\Scripts\LoadSceneOnClick.cs" />
      <Compile Include="Assets\Scripts\PickupScript.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
@@ -70,8 +74,10 @@
      <Compile Include="Assets\Scripts\SwordScript.cs" />
      <Compile Include="Assets\Scripts\SwordShotScript.cs" />
      <Compile Include="Assets\TooCubeForest\demoScenes\Movement.cs" />
+     <Compile Include="Assets\UseScript.cs" />
      <None Include="Assets\Sprite\README.txt" />
      <None Include="Assets\Sprite\License.txt" />
+     <None Include="Assets\BayatGames\Free Platform Game Assets\Readme.txt" />
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>C:/Users/User/Documents/GoldjasFirstGame/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
