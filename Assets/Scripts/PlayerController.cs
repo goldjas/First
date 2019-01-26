@@ -17,7 +17,13 @@ public class PlayerController : MonoBehaviour {
     private GameObject cloneShield;
     private GameObject cloneSwordLaser;
     public AudioClip PickupClip;
-    
+    public AudioClip UseClip;
+    public Text ItemGetText;
+    public Collider2D CurrentCollidingWith;
+    public float DisplayTimer;
+
+    public bool CollidedWithStaticPickup;
+
     private float Heals;
     private float MaxHeals;
     public Image CrystalPicture;
@@ -74,7 +80,7 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        //CrystalPicture.sprite
+        ItemGetText.text = "";
         thePlayerCharacter = new PlayerCharacter();
         Shielded = false;
         ShieldUp = false;
@@ -158,11 +164,7 @@ public class PlayerController : MonoBehaviour {
                     cloneShield = Instantiate(shield, shieldPos, transform.rotation);
 
                     ShieldOut = true;
-
-                    //stop moving when shield is out
                     rb2d.velocity = Vector3.zero;
-                    //rb2d.angularVelocity = Vector3.zero;
-
                 }
             }
 
@@ -174,6 +176,23 @@ public class PlayerController : MonoBehaviour {
                 Shielded = false;
             }
 
+            if (Input.GetButtonUp("Use"))
+            {
+                AudioSource.PlayClipAtPoint(UseClip, gameObject.transform.position);
+                //var anotherCollider = GameObject.FindGameObjectWithTag("StaticPickup").GetComponent<Collider2D>();
+                if(CollidedWithStaticPickup)
+                {
+                    var curGameObj = CurrentCollidingWith.gameObject;
+                    if(curGameObj.name == "ChestDagger")
+                    {
+                        ItemGetText.text = "Get Dagger";
+                        var curAnim = curGameObj.GetComponent<Animator>();
+                        curAnim.SetTrigger("Opened");
+                        DisplayTimer = Time.time + 3;
+                    }
+                }
+
+            }
 
             if (Input.GetButton("Fire3") && Time.time > nextDash)
             {
@@ -220,7 +239,7 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButton("Spell1") && Time.time > nextFire && !ShieldUp && energy > 0)
         {
            
-                nextFire = Time.time + fireRate;
+                nextFire = Time.time + (fireRate * 2);
             //mousePos.z = transform.position.z;
             //var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
             cloneSwordLaser = Instantiate(SwordLaser, gameObject.transform.position, transform.rotation);
@@ -229,7 +248,25 @@ public class PlayerController : MonoBehaviour {
 
 
         }
+
+        if(Time.time > DisplayTimer)
+        {
+            ItemGetText.text = "";
+        }
     }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        Debug.Log("Exiting");
+        if (other.gameObject.CompareTag("StaticPickup"))
+        {
+           
+            var itsSprite = other.gameObject.GetComponent<SpriteRenderer>();
+            itsSprite.color = new Color(255, 255, 255);
+        }
+    }
+
+
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
     void FixedUpdate()
@@ -279,6 +316,18 @@ public class PlayerController : MonoBehaviour {
             AudioSource.PlayClipAtPoint(PickupClip, gameObject.transform.position);
             Destroy(other.gameObject);
 
+        }
+
+        if (other.gameObject.CompareTag("StaticPickup"))
+        {
+            var itsSprite = other.gameObject.GetComponent<SpriteRenderer>();
+            itsSprite.color = new Color(255, 0, 0);
+            CollidedWithStaticPickup = true;
+            CurrentCollidingWith = other.gameObject.GetComponent<Collider2D>();
+        }
+        else
+        {
+            CollidedWithStaticPickup = false;
         }
 
         //if (other.gameObject.CompareTag("EnemyAttack"))

@@ -69,12 +69,13 @@
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\QuitOnClick.cs" />
      <Compile Include="Assets\Scripts\Rotator.cs" />
+     <Compile Include="Assets\Scripts\SetPickupScript.cs" />
      <Compile Include="Assets\Scripts\shieldscript.cs" />
      <Compile Include="Assets\Scripts\ShotScript.cs" />
      <Compile Include="Assets\Scripts\SwordScript.cs" />
      <Compile Include="Assets\Scripts\SwordShotScript.cs" />
+     <Compile Include="Assets\Scripts\UseScript.cs" />
      <Compile Include="Assets\TooCubeForest\demoScenes\Movement.cs" />
-     <Compile Include="Assets\UseScript.cs" />
      <None Include="Assets\Sprite\README.txt" />
      <None Include="Assets\Sprite\License.txt" />
      <None Include="Assets\BayatGames\Free Platform Game Assets\Readme.txt" />

@@ -20,6 +20,7 @@ public class Enemy1Script : MonoBehaviour {
     public GameObject EnemyDamageText;
     public Text DamageTakenText;
 
+
     public float healthTimer;
     public float nextHealth;
 
