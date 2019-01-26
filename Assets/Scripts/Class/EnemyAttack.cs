@@ -8,5 +8,8 @@ namespace Assets.Scripts.Class
 {
     class EnemyAttack
     {
+        public string Name { get; set; }
+        public float Damage { get; set; }
+        //public something Type
     }
 }

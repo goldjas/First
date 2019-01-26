@@ -183,13 +183,18 @@ public class PlayerController : MonoBehaviour {
                 if(CollidedWithStaticPickup)
                 {
                     var curGameObj = CurrentCollidingWith.gameObject;
-                    if(curGameObj.name == "ChestDagger")
+                    if(!curGameObj.GetComponent<SetPickupScript>().PickedUp)
                     {
-                        ItemGetText.text = "Get Dagger";
-                        var curAnim = curGameObj.GetComponent<Animator>();
-                        curAnim.SetTrigger("Opened");
-                        DisplayTimer = Time.time + 3;
+                        if (curGameObj.name == "ChestDagger")
+                        {
+                            ItemGetText.text = "Get Dagger";
+                            var curAnim = curGameObj.GetComponent<Animator>();
+                            curAnim.SetTrigger("Opened");
+                            DisplayTimer = Time.time + 3;
+                            curGameObj.GetComponent<SetPickupScript>().PickedUp = false;
+                        }
                     }
+
                 }
 
             }
@@ -321,9 +326,15 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.CompareTag("StaticPickup"))
         {
             var itsSprite = other.gameObject.GetComponent<SpriteRenderer>();
-            itsSprite.color = new Color(255, 0, 0);
-            CollidedWithStaticPickup = true;
             CurrentCollidingWith = other.gameObject.GetComponent<Collider2D>();
+            var curGameObj = CurrentCollidingWith.gameObject;
+            if (!curGameObj.GetComponent<SetPickupScript>().PickedUp)
+            {
+                itsSprite.color = new Color(255, 0, 0);
+            }
+                
+            CollidedWithStaticPickup = true;
+            
         }
         else
         {

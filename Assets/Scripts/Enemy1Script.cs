@@ -19,6 +19,8 @@ public class Enemy1Script : MonoBehaviour {
     public GameObject MainCanvas;
     public GameObject EnemyDamageText;
     public Text DamageTakenText;
+    public int DamageTaken;
+    public float TimeSinceLastHit;
 
 
     public float healthTimer;
@@ -35,6 +37,8 @@ public class Enemy1Script : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        TimeSinceLastHit = 0;
+        DamageTaken = 1;
         anim = GetComponent<Animator>();
         //playerObject = GameObject.FindGameObjectWithTag("Player");
         health = 10;
@@ -46,37 +50,42 @@ public class Enemy1Script : MonoBehaviour {
 
     public void Hit(int damage)
     {
-        health = health - damage;
-        //gameObject.in
-        //var childCanvas = gameObject.transform.GetChild(0).gameObject;
-        //var childText = EnemyDamageText;
-        //childText.SetActive(true);
-        EnemyDamageText.transform.position = gameObject.transform.position;
-
-        //cloneShield = Instantiate(shield, shieldPos, transform.rotation);
-
-        //healthout = true;
-        var curvec = gameObject.transform.transform.up;
-        curvec.y = curvec.y + 10;
-        //childText.transform.LookAt(curvec);
-        //damage health position
-        //mousePos.z = transform.position.z;
-        //var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
-        //cloneShield = Instantiate(shield, shieldPos, transform.rotation);
-        //origTrans = childText.transform;
-        // childText.transform.Translate(childText.transform.up * 2,,);
-        EnemyDamageText.GetComponent<Text>().text = "- " + damage.ToString();
-       
-        playerObject.GetComponent<PlayerController>().SetLastHitEnemyInfo(EnemyName, health);
-        nextHealth = Time.time + healthTimer;
-        //HealthText.text = "" + health.ToString();
-        if (health<=0)
+        if(Time.time > (TimeSinceLastHit + 0.1f))
         {
-            Death();
+            health = health - damage;
+            //gameObject.in
+            //var childCanvas = gameObject.transform.GetChild(0).gameObject;
+            //var childText = EnemyDamageText;
+            //childText.SetActive(true);
+            EnemyDamageText.transform.position = gameObject.transform.position;
+            Debug.Log("Hit " + EnemyName);
+            //cloneShield = Instantiate(shield, shieldPos, transform.rotation);
+
+            //healthout = true;
+            var curvec = gameObject.transform.transform.up;
+            curvec.y = curvec.y + 10;
+            //childText.transform.LookAt(curvec);
+            //damage health position
+            //mousePos.z = transform.position.z;
+            //var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
+            //cloneShield = Instantiate(shield, shieldPos, transform.rotation);
+            //origTrans = childText.transform;
+            // childText.transform.Translate(childText.transform.up * 2,,);
+            EnemyDamageText.GetComponent<Text>().text = "- " + damage.ToString();
+       
+            playerObject.GetComponent<PlayerController>().SetLastHitEnemyInfo(EnemyName, health);
+            nextHealth = Time.time + healthTimer;
+            //HealthText.text = "" + health.ToString();
+            if (health<=0)
+            {
+                Death();
             
-            //var destobj = DestroyWall1;
-            //Destroy(destobj);
+                //var destobj = DestroyWall1;
+                //Destroy(destobj);
+            }
+            TimeSinceLastHit = Time.time;
         }
+
     }
 
     void Death()
@@ -103,11 +112,11 @@ public class Enemy1Script : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Attack"))
+        if (other.gameObject.CompareTag("Attack") && gameObject.CompareTag("Enemy") && !gameObject.CompareTag("EnemyAttack")) 
         {
             //Debug.Log("triggered " + other.gameObject.name);
             //    other.gameObject.SetActive(false);
-            Hit(1);
+            Hit(DamageTaken);
             //SetHitText();
         }
 
@@ -182,7 +191,7 @@ public class Enemy1Script : MonoBehaviour {
         //NOTE:  Replace this with not awful code, make an enemy class, etc. etc.
         if(EnemyName == "Lesser Light Elemental")
         {
-            //Debug.Log("triggered " + EnemyName);
+       
             LesserLightEleAI();
         }
         else if (EnemyName == "Lesser Dark Elemental")
@@ -198,7 +207,7 @@ public class Enemy1Script : MonoBehaviour {
         float distance = Vector3.Distance(gameObject.transform.position, player.position);
         if (distance < 5)
         {
-            var fireRate = 1.5f;
+            var fireRate = 1f;
             if (Time.time > nextFire)
             {
                 nextFire = Time.time + fireRate;
@@ -235,7 +244,7 @@ public class Enemy1Script : MonoBehaviour {
             var fireRate = 2;
             if (Time.time > nextFire && distance < 0.5f && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"))
             {
-                Debug.Log("is animating" + anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"));
+               // Debug.Log("is animating" + anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"));
                 nextFire = Time.time + fireRate;
                 anim.SetTrigger("Attack");
                 //shot.GetComponent<ShotScript>().SetPlayer(player);
@@ -244,7 +253,7 @@ public class Enemy1Script : MonoBehaviour {
             }
             else if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"))
             {
-                Debug.Log("is animating" + anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"));
+               // Debug.Log("is animating" + anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"));
                 rb2d.velocity = Vector3.zero;
             }
             else

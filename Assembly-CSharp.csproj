@@ -56,11 +56,14 @@
      <Compile Include="Assets\EndAttack.cs" />
      <Compile Include="Assets\Scripts\ButtonScript.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Class\Accessory.cs" />
+     <Compile Include="Assets\Scripts\Class\Armor.cs" />
      <Compile Include="Assets\Scripts\Class\Drops.cs" />
      <Compile Include="Assets\Scripts\Class\Enemy.cs" />
      <Compile Include="Assets\Scripts\Class\EnemyAttack.cs" />
      <Compile Include="Assets\Scripts\Class\PlayerCharacter.cs" />
      <Compile Include="Assets\Scripts\Class\PlayerWeapon.cs" />
+     <Compile Include="Assets\Scripts\Class\Shield.cs" />
      <Compile Include="Assets\Scripts\DeathScript.cs" />
      <Compile Include="Assets\Scripts\Enemy1Script.cs" />
      <Compile Include="Assets\Scripts\EnemyAnimAttackScript.cs" />
