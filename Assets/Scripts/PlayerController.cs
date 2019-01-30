@@ -82,6 +82,7 @@ public class PlayerController : MonoBehaviour {
     {
         ItemGetText.text = "";
         thePlayerCharacter = new PlayerCharacter();
+
         Shielded = false;
         ShieldUp = false;
         invincible = false;
@@ -110,6 +111,10 @@ public class PlayerController : MonoBehaviour {
         thePlayerCharacter.Health = health;
         thePlayerCharacter.Energy = energy;
         thePlayerCharacter.XP = points;
+        thePlayerCharacter.Weapons = new List<PlayerWeapon>
+        {
+            new PlayerWeapon("Rusty Sword")
+        };
     }
 
     void Update()
@@ -192,6 +197,9 @@ public class PlayerController : MonoBehaviour {
                             curAnim.SetTrigger("Opened");
                             DisplayTimer = Time.time + 3;
                             curGameObj.GetComponent<SetPickupScript>().PickedUp = false;
+                            thePlayerCharacter.Weapons.Add(new PlayerWeapon("Dagger"));
+
+
                         }
                     }
 
@@ -328,6 +336,7 @@ public class PlayerController : MonoBehaviour {
             var itsSprite = other.gameObject.GetComponent<SpriteRenderer>();
             CurrentCollidingWith = other.gameObject.GetComponent<Collider2D>();
             var curGameObj = CurrentCollidingWith.gameObject;
+            //bug - this stays red even after picked up for some reason.
             if (!curGameObj.GetComponent<SetPickupScript>().PickedUp)
             {
                 itsSprite.color = new Color(255, 0, 0);

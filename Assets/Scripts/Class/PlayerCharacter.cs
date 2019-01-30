@@ -16,7 +16,7 @@ namespace Assets.Scripts.Class
         //public Dictionary<string, Tuple<int, double>> Defenses {get;set;}
         //public List<Skill> EarnedSkill
         //public Weapon EquippedWeapon{get;set;}
-        //public List<Weapon> Weapons{get;set;}
+        public List<PlayerWeapon> Weapons {get;set;}
         //public Armor EquippedArmor{get;set;}
         //public List<Armor> Armors{get;set;}
         //public Shield EquippedShield{get;set;}

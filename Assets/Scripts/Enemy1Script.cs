@@ -50,7 +50,7 @@ public class Enemy1Script : MonoBehaviour {
 
     public void Hit(int damage)
     {
-        if(Time.time > (TimeSinceLastHit + 0.1f))
+        if(Time.time > (TimeSinceLastHit + 0.2f))
         {
             health = health - damage;
             //gameObject.in
