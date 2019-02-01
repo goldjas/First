@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System.Linq;
 
 public class PlayerController : MonoBehaviour {
 
@@ -144,7 +144,15 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetButton("Fire1") && Time.time > nextFire && !ShieldUp)
             {
                 nextFire = Time.time + fireRate;
-                anim.SetTrigger("Attack");
+                if(thePlayerCharacter.Weapons.Where(z=>z.Equipped).Select(x=>x.Name).FirstOrDefault() == "Dagger")
+                {
+
+                }
+                else
+                {
+                    anim.SetTrigger("Attack");
+                }
+                
 
                 //			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
                 //GetComponent<AudioSource>().Play();

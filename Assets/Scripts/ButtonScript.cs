@@ -16,6 +16,8 @@ public class ButtonScript : MonoBehaviour
     {
         Time.timeScale = 1;
         escapeMenus.SetActive(false);
+        inventoryMenus.SetActive(false);
+        itemsMenu.SetActive(false);
         theCharacter.GetComponent<PlayerController>().isPaus = false;
     }
 
@@ -67,8 +69,76 @@ public class ButtonScript : MonoBehaviour
             
             xToSet = xToSet + 0;
             yToSet = yToSet + 50;
+        }
+    }
 
-            
+    public void OpenArmorInventory()
+    {
+        inventoryMenus.SetActive(false);
+        itemsMenu.SetActive(true);
+        var characterClass = TheCharacter.GetComponent<PlayerController>().thePlayerCharacter;
+
+        var xToSet = 0;
+        var yToSet = 0;
+
+        foreach (var weapon in characterClass.Weapons)
+        {
+            //Debug.Log("weapons:" + weapon.Name);
+            //create a "button and add it to the itemsMenu canvas
+            //Cast it as a Button, not a game object
+            var gameObjectToClone = itemsMenu.transform.GetChild(0).gameObject;
+
+            var clonedGameObject = Instantiate(gameObjectToClone);
+
+            var rectTrans = clonedGameObject.GetComponent<RectTransform>();
+            Button ClonedButton = clonedGameObject.GetComponent<Button>();
+            //Button ClonedButton = Instantiate(buttonToClone);
+            //Use .SetParent(canvasName,false)    
+            clonedGameObject.transform.SetParent(itemsMenu.transform, false);
+            Debug.Log("object: " + rectTrans.position);
+            rectTrans.anchoredPosition = new Vector3(xToSet, yToSet);
+            Debug.Log("object: " + rectTrans.position);
+            Text buttonText = ClonedButton.transform.GetChild(0).GetComponent<Text>();
+            buttonText.text = weapon.Name;
+            //rectTrans.
+
+            xToSet = xToSet + 0;
+            yToSet = yToSet + 50;
+        }
+    }
+
+    public void OpenAccessoryInventory()
+    {
+        inventoryMenus.SetActive(false);
+        itemsMenu.SetActive(true);
+        var characterClass = TheCharacter.GetComponent<PlayerController>().thePlayerCharacter;
+
+        var xToSet = 0;
+        var yToSet = 0;
+
+        foreach (var weapon in characterClass.Weapons)
+        {
+            //Debug.Log("weapons:" + weapon.Name);
+            //create a "button and add it to the itemsMenu canvas
+            //Cast it as a Button, not a game object
+            var gameObjectToClone = itemsMenu.transform.GetChild(0).gameObject;
+
+            var clonedGameObject = Instantiate(gameObjectToClone);
+
+            var rectTrans = clonedGameObject.GetComponent<RectTransform>();
+            Button ClonedButton = clonedGameObject.GetComponent<Button>();
+            //Button ClonedButton = Instantiate(buttonToClone);
+            //Use .SetParent(canvasName,false)    
+            clonedGameObject.transform.SetParent(itemsMenu.transform, false);
+            Debug.Log("object: " + rectTrans.position);
+            rectTrans.anchoredPosition = new Vector3(xToSet, yToSet);
+            Debug.Log("object: " + rectTrans.position);
+            Text buttonText = ClonedButton.transform.GetChild(0).GetComponent<Text>();
+            buttonText.text = weapon.Name;
+            //rectTrans.
+
+            xToSet = xToSet + 0;
+            yToSet = yToSet + 50;
         }
     }
 }

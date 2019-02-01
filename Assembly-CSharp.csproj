@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\Class\Accessory.cs" />
      <Compile Include="Assets\Scripts\Class\Armor.cs" />
+     <Compile Include="Assets\Scripts\Class\Defense.cs" />
      <Compile Include="Assets\Scripts\Class\Drops.cs" />
      <Compile Include="Assets\Scripts\Class\Enemy.cs" />
      <Compile Include="Assets\Scripts\Class\EnemyAttack.cs" />
