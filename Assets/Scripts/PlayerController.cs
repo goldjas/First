@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour {
     private float HealingValue;
 
     public GameObject escapeMenus;
+    public GameObject inventoryMenus;
+    public GameObject itemsMenu;
     public bool isPaus;
 
     public float tilt;
@@ -115,6 +117,13 @@ public class PlayerController : MonoBehaviour {
         {
             new PlayerWeapon("Rusty Sword")
         };
+        foreach(var weapon in thePlayerCharacter.Weapons)
+        {
+            if(weapon.Name == "Rusty Sword")
+            {
+                weapon.Equipped = true;
+            }
+        }
     }
 
     void Update()
@@ -373,6 +382,7 @@ public class PlayerController : MonoBehaviour {
         if (!isPaus)
         {
             Time.timeScale = 0;
+
         }
         else
         {
@@ -380,6 +390,8 @@ public class PlayerController : MonoBehaviour {
         }
         isPaus = !isPaus;
         escapeMenus.SetActive(isPaus);
+        inventoryMenus.SetActive(false);
+        itemsMenu.SetActive(false);
     }
 
     public void TakeDamage(int damage, Collider2D other, bool shielded)
