@@ -14,8 +14,10 @@ public class PlayerController : MonoBehaviour {
     public bool startBlinking = false;
     public GameObject shield;
     public GameObject SwordLaser;
+    public GameObject ThrowDagger;
     private GameObject cloneShield;
     private GameObject cloneSwordLaser;
+    private GameObject cloneThrowDagger;
     public AudioClip PickupClip;
     public AudioClip UseClip;
     public Text ItemGetText;
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviour {
 
     public bool HealVisible;
 
-    public PlayerCharacter thePlayerCharacter;
+    public PlayerCharacter thePlayerCharacter { get; set; }
     private float HealingValue;
 
     public GameObject escapeMenus;
@@ -64,6 +66,8 @@ public class PlayerController : MonoBehaviour {
     public Text CurrentEnemyNameText;
 
     public Text CurrentEnemyHealthText;
+
+    public Text Spell1Text;
 
     private bool CrystalAvailable;
 
@@ -117,17 +121,20 @@ public class PlayerController : MonoBehaviour {
         {
             new PlayerWeapon("Rusty Sword")
         };
+
         foreach(var weapon in thePlayerCharacter.Weapons)
         {
             if(weapon.Name == "Rusty Sword")
             {
                 weapon.Equipped = true;
+               // Spell1Text.text = weapon.Skill.Name;
             }
         }
     }
 
     void Update()
     {
+
         if(CrystalAvailable)
         {
             CrystalPicture.color = new Color(255, 255, 255, 255);
@@ -155,7 +162,7 @@ public class PlayerController : MonoBehaviour {
                 nextFire = Time.time + fireRate;
                 if(thePlayerCharacter.Weapons.Where(z=>z.Equipped).Select(x=>x.Name).FirstOrDefault() == "Dagger")
                 {
-
+                    anim.SetTrigger("DaggerAttack");
                 }
                 else
                 {
@@ -269,12 +276,23 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButton("Spell1") && Time.time > nextFire && !ShieldUp && energy > 0)
         {
            
-                nextFire = Time.time + (fireRate * 2);
+             nextFire = Time.time + (fireRate * 2);
             //mousePos.z = transform.position.z;
+            switch(thePlayerCharacter.Weapons.Where(z => z.Equipped).FirstOrDefault().Name )
+            {
+                case "Rusty Sword":
+                    UseSwordBeam();
+                    break;
+                case "Sword":
+                    UseSwordBeam();
+                    break;
+                case "Dagger":
+                    UseSwordBeam();
+                    break;
+            }
+
             //var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
-            cloneSwordLaser = Instantiate(SwordLaser, gameObject.transform.position, transform.rotation);
-            energy = energy - 10;
-            SetEnergyText();
+
 
 
         }
@@ -283,6 +301,39 @@ public class PlayerController : MonoBehaviour {
         {
             ItemGetText.text = "";
         }
+    }
+
+    void UseSwordBeam()
+    {
+        cloneSwordLaser = Instantiate(SwordLaser, gameObject.transform.position, transform.rotation);
+        var cloneswordscript = cloneSwordLaser.GetComponent<SwordShotScript>();
+        cloneswordscript.thePlayerCharacter = thePlayerCharacter;
+        energy = energy - 10;
+        SetEnergyText();
+    }
+
+    void UseDaggerStorm()
+    {
+
+        var cloneThrowDagger1 = Instantiate(SwordLaser, gameObject.transform.position, transform.rotation);
+        var numDags = 8;
+        for(var dag = 1; dag < numDags;  dag ++)
+        {
+            var rot = transform.rotation;
+            rot.z = rot.z + (45* dag);
+            var cloneThrowDaggerx = Instantiate(SwordLaser, gameObject.transform.position, rot);
+        }
+        energy = energy - 10;
+    }
+
+    void UseNova()
+    {
+
+    }
+
+    void UseMultiShot()
+    {
+
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -328,7 +379,7 @@ public class PlayerController : MonoBehaviour {
             rb2d.AddForce(movement * speed);
         }
 
-
+        SetAbilityText();
 
     }
 
@@ -491,6 +542,17 @@ public class PlayerController : MonoBehaviour {
     {
         CurrentEnemyNameText.text = currentEnemyName;
         CurrentEnemyHealthText.text = currentEnemyHealth.ToString();
+    }
+
+    public void SetAbilityText()
+    {
+        foreach (var weapon in thePlayerCharacter.Weapons)
+        {
+            if (weapon.Equipped)
+            {
+                Spell1Text.text = weapon.Skill.Name;
+            }
+        }
     }
 
 }

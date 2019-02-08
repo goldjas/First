@@ -1,20 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using Assets.Scripts.Class;
 
 public class SwordShotScript : MonoBehaviour
 {
     private int damage;  
     public float speed;
-    public Transform player;
+    public GameObject player;
     Vector2 playpos;
     Rigidbody2D rb2d;
     bool isCollidedWithShield;
+    public PlayerCharacter thePlayerCharacter;
     // Start is called before the first frame update
+    //public SwordShotScript(GameObject player)
+    //{
+    //    player = player;
+    //}
+
     void Start()
     {
-        damage = 2;
-        speed = 10;
+        //damage = 2;
+        //    var test = _player.GetComponent<PlayerController>().thePlayerCharacter;
+        //Debug.Log("playercharacter"+test);
+        
+        damage = thePlayerCharacter.Weapons.Where(x=>x.Equipped).FirstOrDefault().Skill.Damage;
+        //speed = 10;
     }
 
     // Update is called once per frame

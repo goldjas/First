@@ -12,6 +12,7 @@ namespace Assets.Scripts.Class
         public int Damage { get; set; }
         public string DamageType { get; set; }
         public bool Equipped { get; set; }
+        public WeaponSkill Skill { get; set; }
         //animation?
 
 
@@ -24,12 +25,33 @@ namespace Assets.Scripts.Class
             {
                 Damage = 1;
                 DamageType = "Pierce";
+                Skill = new WeaponSkill
+                {
+                    Name = "Dagger Storm",
+                    Damage = 2
+                };
             }
             
-            if (name == "Rusy Sword")
+            if (name == "Rusty Sword")
             {
                 Damage = 1;
                 DamageType = "Slash";
+                Skill = new WeaponSkill
+                {
+                    Name = "Weak Blade Beam",
+                    Damage = 2
+                };
+            }
+
+            if (name == "Sword")
+            {
+                Damage = 3;
+                DamageType = "Slash";
+                Skill = new WeaponSkill
+                {
+                    Name = "Blade Beam",
+                    Damage = 4
+                };
             }
         }
 

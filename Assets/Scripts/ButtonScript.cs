@@ -45,6 +45,7 @@ public class ButtonScript : MonoBehaviour
 
     public void OpenWeaponInventory()
     {
+        //WeaponInvOpened = false;
         WeaponInvOpened = true;
         ArmorInvOpened = false;
         AccessInvOpened = false;
@@ -172,16 +173,19 @@ public class ButtonScript : MonoBehaviour
 
         if(WeaponInvOpened)
         {
+            var word = EventSystem.current.currentSelectedGameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text;
+            Debug.Log(word);
             foreach (var weapon in characterClass.Weapons)
             {
-                var word = EventSystem.current.currentSelectedGameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text;
-                Debug.Log(word);
-
-                if(weapon.Name == word)
+                weapon.Equipped = false;
+                if (weapon.Name == word)
                 {
-
+                    weapon.Equipped = true;
+                    
                 }
+                
             }
+            OpenWeaponInventory();
         }
     }
 }

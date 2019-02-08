@@ -24,6 +24,7 @@ namespace Assets.Scripts.Class
         //public Accessory EquippedAccessory1{get;set;}
         //public Accessory EquippedAccessory2{get;set;}
         //public List<Accessory> Accessory{get;set;}
+        public WeaponSkill UseSkill1 { get; set; }
         //public Item UseItem1{get;set;}
         //public Item UseItem2{get;set;}
         //public List<Item> Items{get;set;
