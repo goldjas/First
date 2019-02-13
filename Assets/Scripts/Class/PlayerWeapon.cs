@@ -27,8 +27,9 @@ namespace Assets.Scripts.Class
                 DamageType = "Pierce";
                 Skill = new WeaponSkill
                 {
-                    Name = "Dagger Storm",
-                    Damage = 2
+                    Name = "1: Dagger Storm",
+                    Damage = 2,
+                    EnergyCost = 10
                 };
             }
             
@@ -39,7 +40,8 @@ namespace Assets.Scripts.Class
                 Skill = new WeaponSkill
                 {
                     Name = "Weak Blade Beam",
-                    Damage = 2
+                    Damage = 2,
+                    EnergyCost = 10
                 };
             }
 
@@ -50,7 +52,30 @@ namespace Assets.Scripts.Class
                 Skill = new WeaponSkill
                 {
                     Name = "Blade Beam",
-                    Damage = 4
+                    Damage = 4,
+                    EnergyCost = 10
+                };
+            }
+            if (name == "Bow")
+            {
+                Damage = 3;
+                DamageType = "Pierce";
+                Skill = new WeaponSkill
+                {
+                    Name = "Multi Shot",
+                    Damage = 3,
+                    EnergyCost = 10
+                };
+            }
+            if (name == "Wand")
+            {
+                Damage = 3;
+                DamageType = "Lightning";
+                Skill = new WeaponSkill
+                {
+                    Name = "Nova",
+                    Damage = 4,
+                    EnergyCost = 10
                 };
             }
         }

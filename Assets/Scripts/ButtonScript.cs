@@ -12,10 +12,12 @@ public class ButtonScript : MonoBehaviour
     public GameObject inventoryMenus;
     public GameObject itemsMenu;
     public GameObject TheCharacter;
+    
 
     public bool WeaponInvOpened;
     public bool ArmorInvOpened;
     public bool AccessInvOpened;
+    public bool ShieldInvOpened;
 
     public void Resume()
     {
@@ -49,6 +51,7 @@ public class ButtonScript : MonoBehaviour
         WeaponInvOpened = true;
         ArmorInvOpened = false;
         AccessInvOpened = false;
+        ShieldInvOpened = false;
 
         inventoryMenus.SetActive(false);
         itemsMenu.SetActive(true);
@@ -95,6 +98,7 @@ public class ButtonScript : MonoBehaviour
         WeaponInvOpened = false;
         ArmorInvOpened = true;
         AccessInvOpened = false;
+        ShieldInvOpened = false;
 
         inventoryMenus.SetActive(false);
         itemsMenu.SetActive(true);
@@ -134,6 +138,7 @@ public class ButtonScript : MonoBehaviour
         WeaponInvOpened = false;
         ArmorInvOpened = false;
         AccessInvOpened = true;
+        ShieldInvOpened = false;
         inventoryMenus.SetActive(false);
         itemsMenu.SetActive(true);
         var characterClass = TheCharacter.GetComponent<PlayerController>().thePlayerCharacter;
@@ -160,6 +165,46 @@ public class ButtonScript : MonoBehaviour
             Debug.Log("object: " + rectTrans.position);
             Text buttonText = ClonedButton.transform.GetChild(0).GetComponent<Text>();
             buttonText.text = weapon.Name;
+            //rectTrans.
+
+            xToSet = xToSet + 0;
+            yToSet = yToSet + 50;
+        }
+    }
+
+    public void OpenShieldInventory()
+    {
+        WeaponInvOpened = false;
+        ArmorInvOpened = false;
+        AccessInvOpened = false;
+        ShieldInvOpened = true;
+
+        inventoryMenus.SetActive(false);
+        itemsMenu.SetActive(true);
+        var characterClass = TheCharacter.GetComponent<PlayerController>().thePlayerCharacter;
+
+        var xToSet = 0;
+        var yToSet = 0;
+
+        foreach (var shield in characterClass.Shields)
+        {
+            //Debug.Log("weapons:" + weapon.Name);
+            //create a "button and add it to the itemsMenu canvas
+            //Cast it as a Button, not a game object
+            var gameObjectToClone = itemsMenu.transform.GetChild(0).gameObject;
+
+            var clonedGameObject = Instantiate(gameObjectToClone);
+
+            var rectTrans = clonedGameObject.GetComponent<RectTransform>();
+            Button ClonedButton = clonedGameObject.GetComponent<Button>();
+            //Button ClonedButton = Instantiate(buttonToClone);
+            //Use .SetParent(canvasName,false)    
+            clonedGameObject.transform.SetParent(itemsMenu.transform, false);
+            Debug.Log("object: " + rectTrans.position);
+            rectTrans.anchoredPosition = new Vector3(xToSet, yToSet);
+            Debug.Log("object: " + rectTrans.position);
+            Text buttonText = ClonedButton.transform.GetChild(0).GetComponent<Text>();
+            buttonText.text = shield.Name;
             //rectTrans.
 
             xToSet = xToSet + 0;

@@ -22,6 +22,8 @@ public class Enemy1Script : MonoBehaviour {
     public int DamageTaken;
     public float TimeSinceLastHit;
 
+    public int EnemyDamageTextTimer;
+
 
     public float healthTimer;
     public float nextHealth;
@@ -44,6 +46,7 @@ public class Enemy1Script : MonoBehaviour {
         health = 10;
         rb2d = GetComponent<Rigidbody2D>();
         healthTimer = 1f;
+        nextHealth = Time.time + 1;
         //NOTE:  TO TELEPORT to Y position 5
         // transform.position = new Vector3(transform.position.x, 5, transform.position.z);
     }
@@ -53,28 +56,18 @@ public class Enemy1Script : MonoBehaviour {
         if(Time.time > (TimeSinceLastHit + 0.2f))
         {
             health = health - damage;
-            //gameObject.in
-            //var childCanvas = gameObject.transform.GetChild(0).gameObject;
-            //var childText = EnemyDamageText;
-            //childText.SetActive(true);
-            EnemyDamageText.transform.position = gameObject.transform.position;
-            Debug.Log("Hit " + EnemyName);
-            //cloneShield = Instantiate(shield, shieldPos, transform.rotation);
 
-            //healthout = true;
-            var curvec = gameObject.transform.transform.up;
-            curvec.y = curvec.y + 10;
-            //childText.transform.LookAt(curvec);
-            //damage health position
-            //mousePos.z = transform.position.z;
-            //var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
-            //cloneShield = Instantiate(shield, shieldPos, transform.rotation);
-            //origTrans = childText.transform;
-            // childText.transform.Translate(childText.transform.up * 2,,);
+            Debug.Log(gameObject.transform.position);
+            EnemyDamageText.transform.position = gameObject.transform.position;
+
+           // var curvec = gameObject.transform.transform.up;
+            //curvec.y = curvec.y + 10;
+
             EnemyDamageText.GetComponent<Text>().text = "- " + damage.ToString();
+            Debug.Log(EnemyDamageText.GetComponent<Text>().text);
        
             playerObject.GetComponent<PlayerController>().SetLastHitEnemyInfo(EnemyName, health);
-            nextHealth = Time.time + healthTimer;
+            nextHealth = Time.time + 1;
             //HealthText.text = "" + health.ToString();
             if (health<=0)
             {
@@ -108,6 +101,7 @@ public class Enemy1Script : MonoBehaviour {
             var destroywall3 = GameObject.Find("DestroyWall4");
             Destroy(destroywall3);
         }
+        EnemyDamageText.GetComponent<Text>().text = "";
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -144,27 +138,11 @@ public class Enemy1Script : MonoBehaviour {
 
     void FixedUpdate()
     {
-        //var childCanvas = gameObject.transform.GetChild(0).gameObject;
-        //if(childCanvas !=null)
-        //{
-            //if(EnemyName == "Lesser Light Elemental")
-            //{
-                //var childText = childCanvas.gameObject.transform.GetChild(0).gameObject;
-                //if(childText.activeInHierarchy)
-                //{
-                    //childText.transform.Translate(childText.transform.up  * Time.deltaTime);
-                    if (Time.time > nextHealth)
-                    {
+        if (Time.time > nextHealth)
+        {
 
-                        //childText.transform.position = gameObject.transform.position;
-
-                        EnemyDamageText.GetComponent<Text>().text = "" ;
-                    }
-
-
-                //}
-            //}
-        //}
+            EnemyDamageText.GetComponent<Text>().text = "";
+        }
 
         float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
         
@@ -172,13 +150,7 @@ public class Enemy1Script : MonoBehaviour {
 
         speed = 5;
 
-
         DoAI();
-
-        //myTransform.rigidbody.velocity = Vector3(lookDir.normalized moveSpeed Time.deltaTime);
-
-
-        //shot.transform = player;
     }
 
     private void Attack()
@@ -242,7 +214,7 @@ public class Enemy1Script : MonoBehaviour {
             Vector2 moveDir = transform.position - player.transform.position;
             //rb2d.AddForce(gameObject.transform.up * speed);
             var fireRate = 2;
-            if (Time.time > nextFire && distance < 0.5f && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"))
+            if (Time.time > nextFire && distance < 0.75f && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"))
             {
                // Debug.Log("is animating" + anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"));
                 nextFire = Time.time + fireRate;

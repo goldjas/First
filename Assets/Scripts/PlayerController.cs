@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour {
     public Transform shotSpawn;
     public float fireRate;
     public float dashTimer;
+    public float healTimer;
     private bool invincible;
 
     public float speed;            
@@ -83,12 +84,15 @@ public class PlayerController : MonoBehaviour {
     private bool ShieldOut;
     private bool Shielded;
 
+    //TODO:  Make more smaller classes and stuff so this dumb file isn't so ginormous.
+
+
     // Use this for initialization
     void Start()
     {
+        healTimer = 0;
         ItemGetText.text = "";
         thePlayerCharacter = new PlayerCharacter();
-
         Shielded = false;
         ShieldUp = false;
         invincible = false;
@@ -122,12 +126,26 @@ public class PlayerController : MonoBehaviour {
             new PlayerWeapon("Rusty Sword")
         };
 
+        thePlayerCharacter.Shields = new List<Shield>
+        {
+            new Shield("Wooden Shield")
+        };
+
         foreach(var weapon in thePlayerCharacter.Weapons)
         {
             if(weapon.Name == "Rusty Sword")
             {
                 weapon.Equipped = true;
-               // Spell1Text.text = weapon.Skill.Name;
+                Spell1Text.text = weapon.Skill.Name;
+            }
+        }
+
+        foreach (var shield in thePlayerCharacter.Shields)
+        {
+            if (shield.Name == "Wooden Shield")
+            {
+                shield.Equipped = true;
+                // Spell1Text.text = weapon.Skill.Name;
             }
         }
     }
@@ -207,28 +225,7 @@ public class PlayerController : MonoBehaviour {
 
             if (Input.GetButtonUp("Use"))
             {
-                AudioSource.PlayClipAtPoint(UseClip, gameObject.transform.position);
-                //var anotherCollider = GameObject.FindGameObjectWithTag("StaticPickup").GetComponent<Collider2D>();
-                if(CollidedWithStaticPickup)
-                {
-                    var curGameObj = CurrentCollidingWith.gameObject;
-                    if(!curGameObj.GetComponent<SetPickupScript>().PickedUp)
-                    {
-                        if (curGameObj.name == "ChestDagger")
-                        {
-                            ItemGetText.text = "Get Dagger";
-                            var curAnim = curGameObj.GetComponent<Animator>();
-                            curAnim.SetTrigger("Opened");
-                            DisplayTimer = Time.time + 3;
-                            curGameObj.GetComponent<SetPickupScript>().PickedUp = false;
-                            thePlayerCharacter.Weapons.Add(new PlayerWeapon("Dagger"));
-
-
-                        }
-                    }
-
-                }
-
+                UseItem();
             }
 
             if (Input.GetButton("Fire3") && Time.time > nextDash)
@@ -243,16 +240,10 @@ public class PlayerController : MonoBehaviour {
                 startBlinking = true;
                 rb2d.AddForce(movement * (speed * 150));
 
-                
-
-
-                //			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-                //GetComponent<AudioSource>().Play();
-
             }
         }
 
-        if(Input.GetButton("Heal"))
+        if(Input.GetButtonUp("Heal"))
         {
             if(Heals > 0)
             {
@@ -267,7 +258,8 @@ public class PlayerController : MonoBehaviour {
                     SetHitText();
                     AudioSource.PlayClipAtPoint(PickupClip, gameObject.transform.position);
                     Heals = Heals - 1;
-                    
+                    rb2d.velocity = Vector3.zero;
+                    healTimer = Time.time + 2;
                 }
                 
             }
@@ -287,19 +279,77 @@ public class PlayerController : MonoBehaviour {
                     UseSwordBeam();
                     break;
                 case "Dagger":
-                    UseSwordBeam();
+                    UseDaggerStorm();
                     break;
             }
-
-            //var shieldPos = Vector3.MoveTowards(transform.position, mousePos, 10 * Time.deltaTime);
-
-
-
         }
 
         if(Time.time > DisplayTimer)
         {
             ItemGetText.text = "";
+        }
+    }
+
+    void Heal()
+    {
+
+    }
+
+    //This sucks
+    void UseItem()
+    {
+        AudioSource.PlayClipAtPoint(UseClip, gameObject.transform.position);
+        //var anotherCollider = GameObject.FindGameObjectWithTag("StaticPickup").GetComponent<Collider2D>();
+        if (CollidedWithStaticPickup)
+        {
+            var curGameObj = CurrentCollidingWith.gameObject;
+            if (!curGameObj.GetComponent<SetPickupScript>().PickedUp)
+            {
+                if (curGameObj.name == "ChestDagger")
+                {
+                    ItemGetText.text = "Get Dagger";
+                    var curAnim = curGameObj.GetComponent<Animator>();
+                    curAnim.SetTrigger("Opened");
+                    DisplayTimer = Time.time + 3;
+                    curGameObj.GetComponent<SetPickupScript>().PickedUp = true;
+                    thePlayerCharacter.Weapons.Add(new PlayerWeapon("Dagger"));
+                }
+
+                if (curGameObj.name == "ChestBow")
+                {
+                    ItemGetText.text = "Get Bow";
+                    var curAnim = curGameObj.GetComponent<Animator>();
+                    curAnim.SetTrigger("Opened");
+                    DisplayTimer = Time.time + 3;
+                    curGameObj.GetComponent<SetPickupScript>().PickedUp = true;
+                    thePlayerCharacter.Weapons.Add(new PlayerWeapon("Bow"));
+                }
+
+                if (curGameObj.name == "ChestWand")
+                {
+                    ItemGetText.text = "Get Wand";
+                    var curAnim = curGameObj.GetComponent<Animator>();
+                    curAnim.SetTrigger("Opened");
+                    DisplayTimer = Time.time + 3;
+                    curGameObj.GetComponent<SetPickupScript>().PickedUp = true;
+                    thePlayerCharacter.Weapons.Add(new PlayerWeapon("Wand"));
+                }
+
+                if (curGameObj.name == "ChestSword")
+                {
+                    ItemGetText.text = "Get Sword";
+                    var curAnim = curGameObj.GetComponent<Animator>();
+                    curAnim.SetTrigger("Opened");
+                    DisplayTimer = Time.time + 3;
+                    curGameObj.GetComponent<SetPickupScript>().PickedUp = true;
+                    thePlayerCharacter.Weapons.Add(new PlayerWeapon("Sword"));
+                }
+                if(curGameObj.name == "DarkSwitch")
+                {
+
+                }
+            }
+
         }
     }
 
@@ -314,14 +364,17 @@ public class PlayerController : MonoBehaviour {
 
     void UseDaggerStorm()
     {
-
-        var cloneThrowDagger1 = Instantiate(SwordLaser, gameObject.transform.position, transform.rotation);
+        var cloneThrowDagger1 = Instantiate(ThrowDagger, gameObject.transform.position, transform.rotation);
+        var cloneswordscript = cloneThrowDagger1.GetComponent<SwordShotScript>();
+        cloneswordscript.thePlayerCharacter = thePlayerCharacter;
         var numDags = 8;
         for(var dag = 1; dag < numDags;  dag ++)
         {
-            var rot = transform.rotation;
-            rot.z = rot.z + (45* dag);
-            var cloneThrowDaggerx = Instantiate(SwordLaser, gameObject.transform.position, rot);
+            GameObject rotatedObject = new GameObject();
+            rotatedObject.transform.Rotate(gameObject.transform.position.x , gameObject.transform.position.y, gameObject.transform.position.z + 45 * dag);
+            var cloneThrowDaggerx = Instantiate(ThrowDagger, gameObject.transform.position, rotatedObject.transform.rotation);
+            var cloneswordscriptx = cloneThrowDaggerx.GetComponent<SwordShotScript>();
+            cloneswordscriptx.thePlayerCharacter = thePlayerCharacter;
         }
         energy = energy - 10;
     }
@@ -339,7 +392,7 @@ public class PlayerController : MonoBehaviour {
     void OnTriggerExit2D(Collider2D other)
     {
         Debug.Log("Exiting");
-        if (other.gameObject.CompareTag("StaticPickup"))
+        if (other.gameObject.CompareTag("StaticPickup") | other.gameObject.CompareTag("SavePoint"))
         {
            
             var itsSprite = other.gameObject.GetComponent<SpriteRenderer>();
@@ -374,7 +427,7 @@ public class PlayerController : MonoBehaviour {
         //rb2d.
 
         //this is what actually moves the thing
-        if(!ShieldUp)
+        if(!ShieldUp && Time.time > healTimer)
         {
             rb2d.AddForce(movement * speed);
         }
@@ -399,12 +452,11 @@ public class PlayerController : MonoBehaviour {
 
         }
 
-        if (other.gameObject.CompareTag("StaticPickup"))
+        if (other.gameObject.CompareTag("StaticPickup") | other.gameObject.CompareTag("SavePoint"))
         {
             var itsSprite = other.gameObject.GetComponent<SpriteRenderer>();
             CurrentCollidingWith = other.gameObject.GetComponent<Collider2D>();
             var curGameObj = CurrentCollidingWith.gameObject;
-            //bug - this stays red even after picked up for some reason.
             if (!curGameObj.GetComponent<SetPickupScript>().PickedUp)
             {
                 itsSprite.color = new Color(255, 0, 0);
