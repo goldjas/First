@@ -39,7 +39,6 @@ public class ShotScript : MonoBehaviour
         // rotate the projectile to aim the target:
         transform.LookAt(target);
         shotfires = shotwait + Time.time;
-       // Debug.Log("shots: " + shotfires);
 
     }
 
@@ -49,7 +48,6 @@ public class ShotScript : MonoBehaviour
         isCollidedWithShield = false;
         rb2d = GetComponent<Rigidbody2D>();
         //wait before firing so player can dodge.
-       // Debug.Log("time: " + Time.time);
         if (Time.time > shotfires)
         {
             speed = 1;
@@ -85,7 +83,6 @@ public class ShotScript : MonoBehaviour
         damage = 8;
         //if (other.gameObject.CompareTag("Attack"))
         //{
-        //    Debug.Log("triggered " + other.gameObject.name);
         //    //    other.gameObject.SetActive(false);
         //    Hit();
         //    //SetHitText();
@@ -98,15 +95,9 @@ public class ShotScript : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player") && isCollidedWithShield)
         {
-            //myObject.GetComponent<MyScript>().MyFunction()
-            // Debug.Log("triggered " + other.gameObject.name);
-            //    other.gameObject.SetActive(false);
-            Debug.Log("shielded");
             other.gameObject.GetComponent<PlayerController>().TakeDamage(damage, GetComponent<Collider2D>(),true);
             isCollidedWithShield = false;
             Destroy(gameObject);
-           // Debug.Log("shielded ");
-            //SetHitText();
         }
         else if(other.gameObject.CompareTag("Player"))
         {
@@ -116,16 +107,11 @@ public class ShotScript : MonoBehaviour
 
         if (other.gameObject.CompareTag("Wall"))
         {
-            //myObject.GetComponent<MyScript>().MyFunction()
-            // Debug.Log("triggered " + other.gameObject.name);
             //    other.gameObject.SetActive(false);
             Destroy(gameObject);
             //SetHitText();
         }
 
-
-        //        Vector2 moveDir = transform.position - player.transform.position;
-        //Debug.Log("triggered " + moveDir.normalized);
         //if (distance < 2)
         //{
         //    rb2d.AddForce(moveDir * speed);

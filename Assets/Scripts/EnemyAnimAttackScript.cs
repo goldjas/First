@@ -60,7 +60,7 @@ public class EnemyAnimAttackScript : MonoBehaviour
     {
         //if (other.gameObject.CompareTag("Attack"))
         //{
-        //    Debug.Log("triggered " + other.gameObject.name);
+
         //    //    other.gameObject.SetActive(false);
         //    Hit();
         //    //SetHitText();
@@ -75,32 +75,19 @@ public class EnemyAnimAttackScript : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && isCollidedWithShield)
         {
             //myObject.GetComponent<MyScript>().MyFunction()
-            // Debug.Log("triggered " + other.gameObject.name);
-            //    other.gameObject.SetActive(false);
-            Debug.Log("shielded");
+
             other.gameObject.GetComponent<PlayerController>().TakeDamage(damage, GetComponent<Collider2D>(), true);
             isCollidedWithShield = false;
-            // Debug.Log("shielded ");
+
             //SetHitText();
         }
         else if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player Hit");
+
             other.gameObject.GetComponent<PlayerController>().TakeDamage(damage, GetComponent<Collider2D>(), false);
         }
 
-        //if (other.gameObject.CompareTag("Wall"))
-        //{
-        //    //myObject.GetComponent<MyScript>().MyFunction()
-        //    // Debug.Log("triggered " + other.gameObject.name);
-        //    //    other.gameObject.SetActive(false);
-        //    Destroy(gameObject);
-        //    //SetHitText();
-        //}
 
-
-        //        Vector2 moveDir = transform.position - player.transform.position;
-        //Debug.Log("triggered " + moveDir.normalized);
         //if (distance < 2)
         //{
         //    rb2d.AddForce(moveDir * speed);

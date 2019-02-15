@@ -346,7 +346,7 @@ public class PlayerController : MonoBehaviour {
                 }
                 if(curGameObj.name == "DarkSwitch")
                 {
-
+                    curGameObj.GetComponent<LightDarkSwitchController>().FlipSwitch();
                 }
             }
 
@@ -391,7 +391,6 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("Exiting");
         if (other.gameObject.CompareTag("StaticPickup") | other.gameObject.CompareTag("SavePoint"))
         {
            
@@ -440,7 +439,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Pickup"))
         {
-            //Debug.Log("triggered " + other.gameObject.name.ToString());
+
             if (other.gameObject.name == "HealthCrystal(Clone)")
             {
                 CrystalPicture.color = new Color(255, 255, 255, 255);
@@ -501,19 +500,14 @@ public class PlayerController : MonoBehaviour {
     {
         //check if shield is out and then x and y coordinates on shield instead?
        
-        //Debug.Log("triggered start" );
         if (Shielded)
         {
-            //   // Debug.Log("triggered " + other.gameObject.name);
             damage = damage / 2;
             Shielded = false;
-
-            //Debug.Log("triggered " + damage.ToString());
         }
 
         if(!invincible)
         {
-            Debug.Log("Damage Taken" + damage.ToString());
             health = health - damage;
             SetHitText();
             //knock away

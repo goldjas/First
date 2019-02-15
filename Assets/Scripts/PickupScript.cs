@@ -20,7 +20,6 @@ public class PickupScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            //Debug.Log("triggered " + other.gameObject.name);
             //    other.gameObject.SetActive(false);
             //Hit();
             //SetHitText();
@@ -29,7 +28,6 @@ public class PickupScript : MonoBehaviour
         //if (other.gameObject.CompareTag("Player"))
         //{
         //    //myObject.GetComponent<MyScript>().MyFunction()
-        //    //Debug.Log("triggered " + other.gameObject.name);
         //    //    other.gameObject.SetActive(false);
         //     other.gameObject.GetComponent<PlayerController>().TakeDamage(5, GetComponent<Collider2D>());
         //    //SetHitText();
@@ -39,7 +37,6 @@ public class PickupScript : MonoBehaviour
         //{
 
         //myObject.GetComponent<MyScript>().MyFunction()
-        //Debug.Log("triggered " + other.gameObject.name);
         //    other.gameObject.SetActive(false);
         // other.gameObject.GetComponent<PlayerController>().TakeDamage(5, GetComponent<Collider2D>());
         //SetHitText();

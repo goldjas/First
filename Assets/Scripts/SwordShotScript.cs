@@ -23,7 +23,7 @@ public class SwordShotScript : MonoBehaviour
     {
         //damage = 2;
         //    var test = _player.GetComponent<PlayerController>().thePlayerCharacter;
-        //Debug.Log("playercharacter"+test);
+
         
         damage = thePlayerCharacter.Weapons.Where(x=>x.Equipped).FirstOrDefault().Skill.Damage;
         //speed = 10;

@@ -26,7 +26,6 @@ public class SwordScript : MonoBehaviour {
         //{
         //    if ()
         //    {
-        //        Debug.Log("triggered " + gameObject.name);
         //        health = health - 5;
         //        SetHitText();
         //        //knock away

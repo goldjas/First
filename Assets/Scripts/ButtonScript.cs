@@ -64,7 +64,6 @@ public class ButtonScript : MonoBehaviour
         {
              
 
-            //Debug.Log("weapons:" + weapon.Name);
             //create a "button and add it to the itemsMenu canvas
             //Cast it as a Button, not a game object
             var gameObjectToClone = itemsMenu.transform.GetChild(0).gameObject;
@@ -76,9 +75,7 @@ public class ButtonScript : MonoBehaviour
             //Button ClonedButton = Instantiate(buttonToClone);
             //Use .SetParent(canvasName,false)    
             clonedGameObject.transform.SetParent(itemsMenu.transform, false);
-            Debug.Log("object: " + rectTrans.position);
             rectTrans.anchoredPosition = new Vector3(xToSet,yToSet);
-            Debug.Log("object: " + rectTrans.position);
             Text buttonText = ClonedButton.transform.GetChild(0).GetComponent<Text>();
             var equippedText = "";
             if(weapon.Equipped)
@@ -109,7 +106,6 @@ public class ButtonScript : MonoBehaviour
 
         foreach (var weapon in characterClass.Weapons)
         {
-            //Debug.Log("weapons:" + weapon.Name);
             //create a "button and add it to the itemsMenu canvas
             //Cast it as a Button, not a game object
             var gameObjectToClone = itemsMenu.transform.GetChild(0).gameObject;
@@ -121,9 +117,7 @@ public class ButtonScript : MonoBehaviour
             //Button ClonedButton = Instantiate(buttonToClone);
             //Use .SetParent(canvasName,false)    
             clonedGameObject.transform.SetParent(itemsMenu.transform, false);
-            Debug.Log("object: " + rectTrans.position);
             rectTrans.anchoredPosition = new Vector3(xToSet, yToSet);
-            Debug.Log("object: " + rectTrans.position);
             Text buttonText = ClonedButton.transform.GetChild(0).GetComponent<Text>();
             buttonText.text = weapon.Name;
             //rectTrans.
@@ -148,7 +142,6 @@ public class ButtonScript : MonoBehaviour
 
         foreach (var weapon in characterClass.Weapons)
         {
-            //Debug.Log("weapons:" + weapon.Name);
             //create a "button and add it to the itemsMenu canvas
             //Cast it as a Button, not a game object
             var gameObjectToClone = itemsMenu.transform.GetChild(0).gameObject;
@@ -160,9 +153,7 @@ public class ButtonScript : MonoBehaviour
             //Button ClonedButton = Instantiate(buttonToClone);
             //Use .SetParent(canvasName,false)    
             clonedGameObject.transform.SetParent(itemsMenu.transform, false);
-            Debug.Log("object: " + rectTrans.position);
             rectTrans.anchoredPosition = new Vector3(xToSet, yToSet);
-            Debug.Log("object: " + rectTrans.position);
             Text buttonText = ClonedButton.transform.GetChild(0).GetComponent<Text>();
             buttonText.text = weapon.Name;
             //rectTrans.
@@ -188,7 +179,6 @@ public class ButtonScript : MonoBehaviour
 
         foreach (var shield in characterClass.Shields)
         {
-            //Debug.Log("weapons:" + weapon.Name);
             //create a "button and add it to the itemsMenu canvas
             //Cast it as a Button, not a game object
             var gameObjectToClone = itemsMenu.transform.GetChild(0).gameObject;
@@ -200,9 +190,7 @@ public class ButtonScript : MonoBehaviour
             //Button ClonedButton = Instantiate(buttonToClone);
             //Use .SetParent(canvasName,false)    
             clonedGameObject.transform.SetParent(itemsMenu.transform, false);
-            Debug.Log("object: " + rectTrans.position);
             rectTrans.anchoredPosition = new Vector3(xToSet, yToSet);
-            Debug.Log("object: " + rectTrans.position);
             Text buttonText = ClonedButton.transform.GetChild(0).GetComponent<Text>();
             buttonText.text = shield.Name;
             //rectTrans.
@@ -219,7 +207,6 @@ public class ButtonScript : MonoBehaviour
         if(WeaponInvOpened)
         {
             var word = EventSystem.current.currentSelectedGameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text;
-            Debug.Log(word);
             foreach (var weapon in characterClass.Weapons)
             {
                 weapon.Equipped = false;

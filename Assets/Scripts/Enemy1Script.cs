@@ -57,14 +57,12 @@ public class Enemy1Script : MonoBehaviour {
         {
             health = health - damage;
 
-            Debug.Log(gameObject.transform.position);
             EnemyDamageText.transform.position = gameObject.transform.position;
 
            // var curvec = gameObject.transform.transform.up;
             //curvec.y = curvec.y + 10;
 
             EnemyDamageText.GetComponent<Text>().text = "- " + damage.ToString();
-            Debug.Log(EnemyDamageText.GetComponent<Text>().text);
        
             playerObject.GetComponent<PlayerController>().SetLastHitEnemyInfo(EnemyName, health);
             nextHealth = Time.time + 1;
@@ -86,7 +84,6 @@ public class Enemy1Script : MonoBehaviour {
         //NOTE:  Replace this with not awful code, make an enemy class, etc. etc.
         if (EnemyName == "Lesser Light Elemental")
         {
-            //Debug.Log("triggered " + EnemyName);
             Instantiate(healthCrystal, transform.position, transform.rotation);
             Destroy(gameObject);
             Destroy(WallToDestroy);
@@ -108,7 +105,6 @@ public class Enemy1Script : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Attack") && gameObject.CompareTag("Enemy") && !gameObject.CompareTag("EnemyAttack")) 
         {
-            //Debug.Log("triggered " + other.gameObject.name);
             //    other.gameObject.SetActive(false);
             Hit(DamageTaken);
             //SetHitText();
@@ -117,7 +113,6 @@ public class Enemy1Script : MonoBehaviour {
         //if (other.gameObject.CompareTag("Player"))
         //{
         //    //myObject.GetComponent<MyScript>().MyFunction()
-        //    //Debug.Log("triggered " + other.gameObject.name);
         //    //    other.gameObject.SetActive(false);
         //     other.gameObject.GetComponent<PlayerController>().TakeDamage(5, GetComponent<Collider2D>());
         //    //SetHitText();
@@ -127,7 +122,6 @@ public class Enemy1Script : MonoBehaviour {
         //{
 
             //myObject.GetComponent<MyScript>().MyFunction()
-            //Debug.Log("triggered " + other.gameObject.name);
             //    other.gameObject.SetActive(false);
             // other.gameObject.GetComponent<PlayerController>().TakeDamage(5, GetComponent<Collider2D>());
             //SetHitText();
@@ -216,7 +210,6 @@ public class Enemy1Script : MonoBehaviour {
             var fireRate = 2;
             if (Time.time > nextFire && distance < 0.75f && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"))
             {
-               // Debug.Log("is animating" + anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"));
                 nextFire = Time.time + fireRate;
                 anim.SetTrigger("Attack");
                 //shot.GetComponent<ShotScript>().SetPlayer(player);
@@ -225,7 +218,6 @@ public class Enemy1Script : MonoBehaviour {
             }
             else if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"))
             {
-               // Debug.Log("is animating" + anim.GetCurrentAnimatorStateInfo(0).IsName("Attack.attack"));
                 rb2d.velocity = Vector3.zero;
             }
             else
