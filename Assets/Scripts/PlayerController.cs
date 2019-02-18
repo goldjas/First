@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour {
     public GameObject escapeMenus;
     public GameObject inventoryMenus;
     public GameObject itemsMenu;
+    public GameObject deathMenus;
+    public GameObject crystalMenus;
     public bool isPaus;
 
     public float tilt;
@@ -90,6 +92,7 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        Time.timeScale = 1;
         healTimer = 0;
         ItemGetText.text = "";
         thePlayerCharacter = new PlayerCharacter();
@@ -119,6 +122,7 @@ public class PlayerController : MonoBehaviour {
 
         escapeMenus.SetActive(false);
         thePlayerCharacter.Health = health;
+        thePlayerCharacter.MaxHealth = MaxHealth;
         thePlayerCharacter.Energy = energy;
         thePlayerCharacter.XP = points;
         thePlayerCharacter.Weapons = new List<PlayerWeapon>
@@ -348,6 +352,10 @@ public class PlayerController : MonoBehaviour {
                 {
                     curGameObj.GetComponent<LightDarkSwitchController>().FlipSwitch();
                 }
+                if (curGameObj.name == "GreenCrystal")
+                {
+                    crystalMenus.SetActive(true);
+                }
             }
 
         }
@@ -494,6 +502,7 @@ public class PlayerController : MonoBehaviour {
         escapeMenus.SetActive(isPaus);
         inventoryMenus.SetActive(false);
         itemsMenu.SetActive(false);
+        crystalMenus.SetActive(false);
     }
 
     public void TakeDamage(int damage, Collider2D other, bool shielded)
@@ -528,8 +537,9 @@ public class PlayerController : MonoBehaviour {
 
     private void PlayerDeath()
     {
+        Time.timeScale = 0;
         Destroy(gameObject);
-
+        deathMenus.SetActive(true);
     }
 
     public void SetShieldedToTrue()

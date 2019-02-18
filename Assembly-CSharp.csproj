@@ -63,6 +63,7 @@
      <Compile Include="Assets\Scripts\Class\Enemy.cs" />
      <Compile Include="Assets\Scripts\Class\EnemyAttack.cs" />
      <Compile Include="Assets\Scripts\Class\PlayerCharacter.cs" />
+     <Compile Include="Assets\Scripts\Class\PlayerEnhanceTree.cs" />
      <Compile Include="Assets\Scripts\Class\PlayerWeapon.cs" />
      <Compile Include="Assets\Scripts\Class\Shield.cs" />
      <Compile Include="Assets\Scripts\Class\WeaponSkill.cs" />

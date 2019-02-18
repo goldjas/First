@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.IO;
+using Assets.Scripts.Class;
 
-public class ButtonScript : MonoBehaviour
-{
+
+public class ButtonScript : MonoBehaviour{
     public GameObject escapeMenus;
     public GameObject theCharacter;
     public GameObject inventoryMenus;
@@ -213,11 +215,47 @@ public class ButtonScript : MonoBehaviour
                 if (weapon.Name == word)
                 {
                     weapon.Equipped = true;
-                    
                 }
-                
             }
             OpenWeaponInventory();
         }
+    }
+    public void ClickedSave()
+    {
+        var data = TheCharacter.GetComponent<PlayerController>().thePlayerCharacter;
+
+        Debug.Log(Application.persistentDataPath);
+        var path = Path.Combine(Application.persistentDataPath, "SaveGame.txt");
+
+        string jsonString = JsonUtility.ToJson(data);
+
+        using (StreamWriter streamWriter = File.CreateText(path))
+        {
+            streamWriter.Write(jsonString);
+        }
+    }
+    
+    public void ClickedEnhance()
+    {
+
+    }
+
+    public void ClickedLoadGame()
+    {
+        if(File.Exists(Path.Combine(Application.persistentDataPath, "SaveGame.txt")))
+        {
+            using (StreamReader streamReader = File.OpenText(Path.Combine(Application.persistentDataPath, "SaveGame.txt")))
+            {
+                string jsonString = streamReader.ReadToEnd();
+
+                TheCharacter.GetComponent<PlayerController>().thePlayerCharacter = JsonUtility.FromJson<PlayerCharacter>(jsonString);
+            }
+        }
+        else
+        {
+            //start over
+            SceneManager.LoadScene(1);
+        }
+
     }
 }

@@ -82,7 +82,7 @@ public class Enemy1Script : MonoBehaviour {
     void Death()
     {
         //NOTE:  Replace this with not awful code, make an enemy class, etc. etc.
-        if (EnemyName == "Lesser Light Elemental")
+        if (EnemyName == "Lesser Light Elemental" && gameObject.name == "transptest")
         {
             Instantiate(healthCrystal, transform.position, transform.rotation);
             Destroy(gameObject);
@@ -127,7 +127,7 @@ public class Enemy1Script : MonoBehaviour {
             //SetHitText();
         //}
     }
-
+    //MAKE GAME OVER!!!
 
 
     void FixedUpdate()

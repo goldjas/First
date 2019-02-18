@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Class
 {
+    [Serializable]
     public class PlayerCharacter
     {
 
         public string Name { get; set; }
         public float Health { get; set; }
+        public float MaxHealth { get; set; }
         public float Energy { get; set; }
+        public float MaxEnergy { get; set; }
         public float XP { get; set; }
         //public Dictionary<string, Tuple<int, double>> Defenses {get;set;}
         //public List<Skill> EarnedSkill
@@ -25,6 +28,10 @@ namespace Assets.Scripts.Class
         //public Accessory EquippedAccessory2{get;set;}
         public List<Accessory> Accessory{get;set;}
         public WeaponSkill UseSkill1 { get; set; }
+        public PlayerEnhanceTree EnhanceTree { get; set; }
+        public string CrystalSavedAt { get; set; }
+        public string AreaSavedAt { get; set; }
+
         //public Item UseItem1{get;set;}
         //public Item UseItem2{get;set;}
         //public List<Item> Items{get;set;
